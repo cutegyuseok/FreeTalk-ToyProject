@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FreeTalkApplication {
 
     public static void main(String[] args) {
+        System.setProperty("user.timezone", "Asia/Seoul");
         SpringApplication.run(FreeTalkApplication.class, args);
     }
 
