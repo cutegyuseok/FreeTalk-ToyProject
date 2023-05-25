@@ -15,11 +15,8 @@ public class AwsS3Controller {
     private final AwsS3Service awsS3Service;
 
     @PostMapping("/image")
-    @ApiOperation(value = "이미지 업로드 API", notes = "이미지를 업로드 하고, URL 을 반환.\n\n" +
-            "code: 200 업로드됨, 400 업로드 중 문제 발생, 404 파일이 비어있음")
-    public ResponseEntity<?> uploadFile(
-            @RequestParam("category") String category,
-            @RequestPart(value = "file") MultipartFile multipartFile) {
+    @ApiOperation(value = "이미지 업로드 API", notes = "이미지를 업로드 하고, URL 을 반환.\n\n" + "code: 200 업로드됨, 400 업로드 중 문제 발생, 404 파일이 비어있음")
+    public ResponseEntity<?> uploadFile(@RequestParam("category") String category, @RequestPart(value = "file") MultipartFile multipartFile) {
         return awsS3Service.uploadFileV1(category, multipartFile);
     }
 
