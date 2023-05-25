@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class Community {
 
     @Id
-    @Column(name = "community_id")
+    @Column(name = "pk")
     private Long communityId;
 
     @CreatedDate

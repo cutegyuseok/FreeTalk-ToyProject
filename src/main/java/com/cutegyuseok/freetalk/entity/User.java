@@ -27,7 +27,7 @@ public class User {
     @Id
     @Column(name = "pk")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long pk;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -68,8 +68,8 @@ public class User {
 
 
     @Builder
-    public User(Long userId, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, String role, String status) {
-        this.userId = userId;
+    public User(Long pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, String role, String status) {
+        this.pk = pk;
         this.email = email;
         this.name = name;
         this.nickName = nickName;
