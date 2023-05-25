@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,32 +25,38 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "pk")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(name = "email", nullable = false)
+    private String email;
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "nick_name", nullable = false)
+    private String nickName;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    @Column(name = "profile_image")
+    private String profileImage;
+
+    @Column(name = "self_introduction")
+    private String selfIntroduction;
+
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
     @Column(name = "birthday", nullable = false)
-    private String birthday;
-
-    @Column(name = "gender", nullable = false)
-    private String gender;
-    @Column(name = "status")
-    private String status;
+    private LocalDate birthday;
 
     @Column(name = "role", nullable = false)
     private String role;
+
+    @Column(name = "status")
+    private String status;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -59,16 +66,19 @@ public class User {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+
     @Builder
-    public User(String email, String password, String name, String birthday, String phoneNumber, String role, String gender, String status) {
+    public User(Long userId, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, String role, String status) {
+        this.userId = userId;
         this.email = email;
-        this.password = password;
         this.name = name;
+        this.nickName = nickName;
+        this.password = password;
+        this.profileImage = profileImage;
+        this.selfIntroduction = selfIntroduction;
+        this.phone = phone;
         this.birthday = birthday;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
         this.role = role;
         this.status = status;
     }
-
 }
