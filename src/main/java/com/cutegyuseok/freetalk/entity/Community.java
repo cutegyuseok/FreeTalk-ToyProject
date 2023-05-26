@@ -1,26 +1,25 @@
 package com.cutegyuseok.freetalk.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.cutegyuseok.freetalk.entity.enumType.CommunityStatus;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "community")
 public class Community {
 
@@ -35,7 +34,8 @@ public class Community {
     private String introduce;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private CommunityStatus status;
 
     @Column(name = "main_image", nullable = false)
     private String mainImage;
@@ -51,8 +51,11 @@ public class Community {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CommunityCategory> communityCategoryList = new ArrayList<>();
+
     @Builder
-    public Community(Long pk, String name, String introduce, String status, String mainImage, String backgroundImage) {
+    public Community(Long pk, String name, String introduce, CommunityStatus status, String mainImage, String backgroundImage) {
         this.pk = pk;
         this.name = name;
         this.introduce = introduce;
