@@ -1,9 +1,8 @@
 package com.cutegyuseok.freetalk.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.cutegyuseok.freetalk.entity.enumType.UserRole;
+import com.cutegyuseok.freetalk.entity.enumType.UserStatus;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
@@ -37,7 +36,7 @@ public class User {
     @Column(name = "nick_name", nullable = false)
     private String nickName;
 
-    @Column(name = "password")
+    @Column(name = "password",nullable = false)
     private String password;
 
     @Column(name = "profile_image")
@@ -53,10 +52,12 @@ public class User {
     private LocalDate birthday;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -68,7 +69,7 @@ public class User {
 
 
     @Builder
-    public User(Long pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, String role, String status) {
+    public User(Long pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, UserRole role, UserStatus status) {
         this.pk = pk;
         this.email = email;
         this.name = name;
