@@ -27,11 +27,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.OAS_30) // 3.0 문서버전으로 세팅
+        return new Docket(DocumentationType.OAS_30)
                 .groupName("이규석")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.cutegyuseok.freetalk"))
-//                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)
@@ -55,7 +54,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .name(REFERENCE).build();
     }
 
-    //JWT SecurityContext 구성
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
     }
