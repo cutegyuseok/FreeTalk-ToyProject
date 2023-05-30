@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "join")
+@Table(name = "joining")
 public class Join {
 
     @Id
