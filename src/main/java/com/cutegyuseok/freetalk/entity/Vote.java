@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "category")
+@Table(name = "vote")
 public class Vote {
 
     @Id
@@ -33,7 +33,7 @@ public class Vote {
     @JoinColumn(name = "posting")
     private Posting posting;
 
-    @Column
+    @Column(name = "liked")
     @Convert(converter = BooleanToYNConverter.class)
     private Boolean like;
 
