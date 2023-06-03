@@ -1,11 +1,11 @@
-package com.cutegyuseok.freetalk.auth.service;
-
+package com.cutegyuseok.freetalk.auth.service.impl;
 
 
 import com.cutegyuseok.freetalk.auth.dto.TokenDTO;
+import com.cutegyuseok.freetalk.auth.repository.UserRepository;
+import com.cutegyuseok.freetalk.auth.service.TokenService;
 import com.cutegyuseok.freetalk.global.jwt.JwtProvider;
 import com.cutegyuseok.freetalk.global.redis.RedisTemplateRepository;
-import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,6 @@ public class TokenServiceImpl implements TokenService {
                 redisTemplateRepository.setDataExpire(header, "logout", jwtProvider.getExpiration(accessToken));
                 jwtProvider.getExpiration(refreshTokenReqDTO.getRefreshToken());
                 redisTemplateRepository.deleteData(refreshTokenReqDTO.getRefreshToken());
-
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,9 +42,7 @@ public class TokenServiceImpl implements TokenService {
         try {
             String userEmail = redisTemplateRepository.getData(refreshToken);
             if (jwtProvider.getExpiration(refreshToken) > 0 && checkToken(refreshToken)) {
-                //Role 확인
                 String userRole = userRepository.findByEmail(userEmail).orElseThrow(IllegalArgumentException::new).getRole().name();
-
                 String updateAccessToken = jwtProvider.recreationAccessToken(userEmail, userRole);
                 return new ResponseEntity<>(TokenDTO.builder().accessToken(updateAccessToken).refreshToken(refreshToken).role(userRole).build(), HttpStatus.OK);
             } else {

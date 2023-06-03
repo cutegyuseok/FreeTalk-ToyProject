@@ -1,7 +1,6 @@
 package com.cutegyuseok.freetalk.global.jwt;
 
 
-
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.service.TokenService;
 import lombok.Builder;

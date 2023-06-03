@@ -1,7 +1,6 @@
 package com.cutegyuseok.freetalk.global.jwt;
 
 import com.cutegyuseok.freetalk.auth.dto.TokenDTO;
-
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
 import io.jsonwebtoken.Claims;
@@ -76,6 +75,7 @@ public class JwtProvider {
                         .parseClaimsJws(accessToken)
                         .getBody().getExpiration();
         Long now = new Date().getTime();
+
         return (expiration.getTime() - now);
     }
 

@@ -1,7 +1,6 @@
 package com.cutegyuseok.freetalk.community.entity;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
-import com.cutegyuseok.freetalk.community.entity.Community;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

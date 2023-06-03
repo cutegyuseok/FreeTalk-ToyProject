@@ -30,6 +30,12 @@ public class RedisTemplateRepository {
         valueOperations.set(key, value, expireDuration);
     }
 
+    public void setDataExpireByMinute(String key, String value, long min) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        Duration expireDuration = Duration.ofMinutes(min);
+        valueOperations.set(key, value, expireDuration);
+    }
+
     public void deleteData(String key) {
         redisTemplate.delete(key);
     }

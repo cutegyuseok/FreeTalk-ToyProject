@@ -2,7 +2,10 @@ package com.cutegyuseok.freetalk.auth.entity;
 
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +18,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @DynamicUpdate
@@ -36,7 +38,7 @@ public class User {
     @Column(name = "nick_name", nullable = false)
     private String nickName;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "profile_image")
@@ -55,7 +57,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -81,5 +83,13 @@ public class User {
         this.birthday = birthday;
         this.role = role;
         this.status = status;
+    }
+
+    public void changeUserStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public void changeUserRole(UserRole role) {
+        this.role = role;
     }
 }

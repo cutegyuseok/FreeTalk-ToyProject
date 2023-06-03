@@ -12,5 +12,7 @@ public enum UserStatus {
     @JsonProperty("WITHDRAWAL")
     WITHDRAWAL,
     @JsonProperty("DORMANT")
-    DORMANT
+    DORMANT,
+    @JsonProperty("NOT_AUTHORIZED")
+    NOT_AUTHORIZED
 }
