@@ -1,4 +1,4 @@
-package com.cutegyuseok.freetalk.repository;
+package com.cutegyuseok.freetalk.global.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

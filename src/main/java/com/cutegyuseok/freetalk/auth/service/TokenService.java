@@ -1,7 +1,7 @@
-package com.cutegyuseok.freetalk.service;
+package com.cutegyuseok.freetalk.auth.service;
 
 
-import com.cutegyuseok.freetalk.dto.TokenDTO;
+import com.cutegyuseok.freetalk.auth.dto.TokenDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface TokenService {

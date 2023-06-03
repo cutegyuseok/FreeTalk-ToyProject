@@ -1,4 +1,4 @@
-package com.cutegyuseok.freetalk.dto;
+package com.cutegyuseok.freetalk.auth.dto;
 
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiModel;

@@ -1,6 +1,6 @@
-package com.cutegyuseok.freetalk.repository;
+package com.cutegyuseok.freetalk.auth.repository;
 
-import com.cutegyuseok.freetalk.entity.User;
+import com.cutegyuseok.freetalk.auth.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

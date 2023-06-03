@@ -1,7 +1,7 @@
-package com.cutegyuseok.freetalk.entity;
+package com.cutegyuseok.freetalk.auth.entity;
 
-import com.cutegyuseok.freetalk.entity.enumType.UserRole;
-import com.cutegyuseok.freetalk.entity.enumType.UserStatus;
+import com.cutegyuseok.freetalk.auth.enumType.UserRole;
+import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

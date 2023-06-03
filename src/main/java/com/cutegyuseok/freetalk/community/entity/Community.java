@@ -1,6 +1,6 @@
-package com.cutegyuseok.freetalk.entity;
+package com.cutegyuseok.freetalk.community.entity;
 
-import com.cutegyuseok.freetalk.entity.enumType.CommunityStatus;
+import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

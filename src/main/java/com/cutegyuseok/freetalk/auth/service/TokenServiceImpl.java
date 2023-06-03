@@ -1,11 +1,11 @@
-package com.cutegyuseok.freetalk.service;
+package com.cutegyuseok.freetalk.auth.service;
 
 
 
-import com.cutegyuseok.freetalk.dto.TokenDTO;
+import com.cutegyuseok.freetalk.auth.dto.TokenDTO;
 import com.cutegyuseok.freetalk.global.jwt.JwtProvider;
-import com.cutegyuseok.freetalk.repository.RedisTemplateRepository;
-import com.cutegyuseok.freetalk.repository.UserRepository;
+import com.cutegyuseok.freetalk.global.redis.RedisTemplateRepository;
+import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

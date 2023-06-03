@@ -1,6 +1,6 @@
-package com.cutegyuseok.freetalk.entity;
+package com.cutegyuseok.freetalk.posting.entity;
 
-import com.cutegyuseok.freetalk.global.tools.BooleanToYNConverter;
+import com.cutegyuseok.freetalk.auth.entity.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -34,11 +34,10 @@ public class Vote {
     private Posting posting;
 
     @Column(name = "liked")
-    @Convert(converter = BooleanToYNConverter.class)
-    private Boolean like;
+    private Integer like;
 
     @Builder
-    public Vote(Long pk, User user, Comment comment, Posting posting, Boolean like) {
+    public Vote(Long pk, User user, Comment comment, Posting posting, Integer like) {
         this.pk = pk;
         this.user = user;
         this.comment = comment;

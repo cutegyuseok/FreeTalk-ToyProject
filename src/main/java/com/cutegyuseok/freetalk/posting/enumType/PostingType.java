@@ -1,4 +1,4 @@
-package com.cutegyuseok.freetalk.entity.enumType;
+package com.cutegyuseok.freetalk.posting.enumType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

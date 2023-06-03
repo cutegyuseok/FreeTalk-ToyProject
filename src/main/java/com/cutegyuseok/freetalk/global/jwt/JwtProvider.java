@@ -1,9 +1,9 @@
 package com.cutegyuseok.freetalk.global.jwt;
 
-import com.cutegyuseok.freetalk.dto.TokenDTO;
+import com.cutegyuseok.freetalk.auth.dto.TokenDTO;
 
-import com.cutegyuseok.freetalk.dto.UserDTO;
-import com.cutegyuseok.freetalk.entity.User;
+import com.cutegyuseok.freetalk.auth.dto.UserDTO;
+import com.cutegyuseok.freetalk.auth.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

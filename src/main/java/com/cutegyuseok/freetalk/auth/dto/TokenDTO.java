@@ -1,4 +1,4 @@
-package com.cutegyuseok.freetalk.dto;
+package com.cutegyuseok.freetalk.auth.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

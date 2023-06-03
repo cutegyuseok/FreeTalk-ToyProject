@@ -1,5 +1,6 @@
-package com.cutegyuseok.freetalk.entity;
+package com.cutegyuseok.freetalk.community.entity;
 
+import com.cutegyuseok.freetalk.category.entity.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

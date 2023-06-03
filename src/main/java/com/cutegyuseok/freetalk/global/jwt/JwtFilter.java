@@ -2,8 +2,8 @@ package com.cutegyuseok.freetalk.global.jwt;
 
 
 
-import com.cutegyuseok.freetalk.dto.UserDTO;
-import com.cutegyuseok.freetalk.service.TokenService;
+import com.cutegyuseok.freetalk.auth.dto.UserDTO;
+import com.cutegyuseok.freetalk.auth.service.TokenService;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

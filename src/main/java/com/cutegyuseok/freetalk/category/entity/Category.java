@@ -1,8 +1,7 @@
-package com.cutegyuseok.freetalk.entity;
+package com.cutegyuseok.freetalk.category.entity;
 
+import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
