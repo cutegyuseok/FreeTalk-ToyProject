@@ -112,6 +112,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<?> updateUserProfile(UserDTO.UserAccessDTO userAccessDTO, UserDTO.ProfileUpdateReqDTO dto) {
+        try {
+            User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(IllegalArgumentException::new);
+            user.changeUserProfile(dto.getNickName(),dto.getProfileImage(),dto.getSelfIntroduction());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     public String makeCoe() {
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',

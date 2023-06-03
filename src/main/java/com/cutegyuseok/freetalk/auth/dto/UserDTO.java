@@ -107,5 +107,20 @@ public class UserDTO {
         @ApiModelProperty(value = "권한")
         private UserRole role;
     }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    @ApiModel(value = "프로필 수정")
+    public static class ProfileUpdateReqDTO {
 
+        @ApiModelProperty(value = "닉네임")
+        private String nickName;
+        @ApiModelProperty(value = "프로필 사진")
+        private String profileImage;
+        @ApiModelProperty(value = "자기소개")
+        private String selfIntroduction;
+
+    }
 }
