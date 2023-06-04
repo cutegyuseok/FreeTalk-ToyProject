@@ -67,14 +67,13 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> emailConfirmation(UserDTO.UserAccessDTO dto, String codeReq) {
         try {
             String code = redisTemplateRepository.getData(dto.getEmail());
-            User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
+            User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(NoSuchElementException::new);
             if (code.equals(codeReq.toUpperCase())) {
                 user.changeUserStatus(UserStatus.AVAILABLE);
                 user.changeUserRole(UserRole.ROLE_USER);
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -96,7 +95,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> login(UserDTO.LoginReqDTO loginReqDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getUserEmail())
-                    .orElseThrow(IllegalArgumentException::new);
+                    .orElseThrow(NoSuchElementException::new);
             if (user.getStatus().equals(UserStatus.BANNED)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -107,7 +106,7 @@ public class UserServiceImpl implements UserService {
             TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
             redisTemplateRepository.setDataExpire(tokenDTO.getRefreshToken(), user.getEmail(), jwtProvider.getExpiration(tokenDTO.getRefreshToken()));
             return new ResponseEntity<>(tokenDTO, HttpStatus.OK);
-        } catch (NoSuchElementException | IllegalArgumentException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -116,13 +115,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ResponseEntity<?> updateUserProfile(UserDTO.UserAccessDTO userAccessDTO, UserDTO.ProfileUpdateReqDTO dto) {
         try {
-            User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(IllegalArgumentException::new);
-            user.changeUserProfile(dto.getNickName(),dto.getProfileImage(),dto.getSelfIntroduction());
+            User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+            user.changeUserProfile(dto.getNickName(), dto.getProfileImage(), dto.getSelfIntroduction());
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (IllegalArgumentException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> checkUserInfo(UserDTO.UserAccessDTO userAccessDTO) {
+        try {
+            User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+            return new ResponseEntity<>(new UserDTO.ProfileCheckReqDTO(user), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

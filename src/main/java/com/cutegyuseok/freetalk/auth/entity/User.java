@@ -93,15 +93,15 @@ public class User {
         this.role = role;
     }
 
-    public void changeUserProfile(String nickName,String profileImage,String selfIntroduction){
-        if (nickName!=null){
+    public void changeUserProfile(String nickName, String profileImage, String selfIntroduction) {
+        if (nickName != null) {
             this.nickName = nickName;
         }
-        if (profileImage!=null){
+        if (profileImage != null) {
             this.profileImage = profileImage;
         }
-        if (selfIntroduction!=null){
-            this.selfIntroduction=selfIntroduction;
+        if (selfIntroduction != null) {
+            this.selfIntroduction = selfIntroduction;
         }
     }
 }

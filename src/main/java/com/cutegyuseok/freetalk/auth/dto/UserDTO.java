@@ -1,5 +1,6 @@
 package com.cutegyuseok.freetalk.auth.dto;
 
+import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiModel;
@@ -107,6 +108,7 @@ public class UserDTO {
         @ApiModelProperty(value = "권한")
         private UserRole role;
     }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -121,6 +123,29 @@ public class UserDTO {
         private String profileImage;
         @ApiModelProperty(value = "자기소개")
         private String selfIntroduction;
+    }
 
+    @Getter
+    @ApiModel(value = "프로필 조회")
+    public static class ProfileCheckReqDTO {
+
+        @ApiModelProperty(value = "이메일")
+        private String email;
+        @ApiModelProperty(value = "이름")
+        private String name;
+        @ApiModelProperty(value = "닉네임")
+        private String nickName;
+        @ApiModelProperty(value = "프로필 사진")
+        private String profileImage;
+        @ApiModelProperty(value = "자기소개")
+        private String selfIntroduction;
+
+        public ProfileCheckReqDTO(User user) {
+            this.email = user.getEmail();
+            this.name = user.getName();
+            this.nickName = user.getNickName();
+            this.profileImage = user.getProfileImage();
+            this.selfIntroduction = user.getSelfIntroduction();
+        }
     }
 }

@@ -20,7 +20,13 @@ public class UserController {
 
     @PatchMapping("/info")
     @ApiOperation(value = "사용자 프로필 수정", notes = "사용자 정보 입력값만 반영\n\n code: 200 OK, 404 없는 사용자, 500 서버에러")
-    public ResponseEntity<?> updateUserInfo(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody UserDTO.ProfileUpdateReqDTO profileUpdateReqDTO){
-       return userService.updateUserProfile(userAccessDTO,profileUpdateReqDTO);
+    public ResponseEntity<?> updateUserInfo(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody UserDTO.ProfileUpdateReqDTO profileUpdateReqDTO) {
+        return userService.updateUserProfile(userAccessDTO, profileUpdateReqDTO);
+    }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "사용자 정보 조회", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
+    public ResponseEntity<?> checkUserInfo(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
+        return userService.checkUserInfo(userAccessDTO);
     }
 }

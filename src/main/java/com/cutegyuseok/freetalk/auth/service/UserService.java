@@ -11,5 +11,8 @@ public interface UserService {
     ResponseEntity<?> emailConfirmationCodeRequest(UserDTO.UserAccessDTO dto);
 
     ResponseEntity<?> login(UserDTO.LoginReqDTO loginReqDTO);
-    ResponseEntity<?> updateUserProfile(UserDTO.UserAccessDTO userAccessDTO,UserDTO.ProfileUpdateReqDTO dto);
+
+    ResponseEntity<?> updateUserProfile(UserDTO.UserAccessDTO userAccessDTO, UserDTO.ProfileUpdateReqDTO dto);
+
+    ResponseEntity<?> checkUserInfo(UserDTO.UserAccessDTO userAccessDTO);
 }
