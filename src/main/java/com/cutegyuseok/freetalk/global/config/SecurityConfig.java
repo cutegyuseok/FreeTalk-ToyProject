@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .mvcMatchers(PUBLIC_URLS).permitAll()
                 .and()
                 .authorizeRequests()
-                .mvcMatchers(ADMIN_URLS).hasRole("ADMIN")
+                .mvcMatchers(ADMIN_URLS).hasAnyRole("SUPER","WRITE")
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
