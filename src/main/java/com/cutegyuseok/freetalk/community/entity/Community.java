@@ -56,15 +56,16 @@ public class Community {
     private List<CommunityCategory> communityCategoryList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user",nullable = false)
     private User user;
     @Builder
-    public Community(String name, String introduce, String mainImage, String backgroundImage,User user) {
+    public Community(String name, String introduce, String mainImage, String backgroundImage,User user,CommunityStatus status) {
         this.name = name;
         this.introduce = introduce;
         this.mainImage = mainImage;
         this.backgroundImage = backgroundImage;
         this.user = user;
+        this.status = status;
     }
 
     public void connectCategories(List<CommunityCategory> reqList){
