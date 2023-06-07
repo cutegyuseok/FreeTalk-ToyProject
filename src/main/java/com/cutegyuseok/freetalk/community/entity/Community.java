@@ -25,6 +25,7 @@ public class Community {
 
     @Id
     @Column(name = "pk")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
 
     @Column(name = "name", nullable = false)
