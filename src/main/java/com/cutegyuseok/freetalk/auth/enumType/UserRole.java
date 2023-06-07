@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 public enum UserRole {
     @JsonProperty("ROLE_SUPER")
     ROLE_SUPER("ROLE_SUPER", 0),
-    @JsonProperty("ROLE_ADMIN")
-    ROLE_WRITE("ROLE_ADMIN", 1),
+    @JsonProperty("ROLE_WRITE")
+    ROLE_WRITE("ROLE_WRITE", 1),
     @JsonProperty("ROLE_READ")
     ROLE_READ("ROLE_READ", 2),
     @JsonProperty("ROLE_USER")
