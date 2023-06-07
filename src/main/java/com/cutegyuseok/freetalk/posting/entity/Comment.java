@@ -26,6 +26,7 @@ public class Comment {
 
     @Id
     @Column(name = "pk")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
 
     @ManyToOne
