@@ -1,5 +1,6 @@
 package com.cutegyuseok.freetalk.community.entity;
 
+import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @DynamicUpdate
@@ -54,13 +54,19 @@ public class Community {
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommunityCategory> communityCategoryList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    private User user;
     @Builder
-    public Community(Long pk, String name, String introduce, CommunityStatus status, String mainImage, String backgroundImage) {
-        this.pk = pk;
+    public Community(String name, String introduce, String mainImage, String backgroundImage,User user) {
         this.name = name;
         this.introduce = introduce;
-        this.status = status;
         this.mainImage = mainImage;
         this.backgroundImage = backgroundImage;
+        this.user = user;
+    }
+
+    public void connectCategories(List<CommunityCategory> reqList){
+        this.communityCategoryList = reqList;
     }
 }
