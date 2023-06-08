@@ -22,4 +22,9 @@ public class CommunityController {
     public ResponseEntity<?> makeCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody CommunityDTO.MakeCommunityDTO dto){
         return communityService.createCommunity(dto,userAccessDTO);
     }
+
+    @GetMapping("/{pk}")
+    public ResponseEntity<?> showCommunity(@PathVariable Long pk){
+        return communityService.showCommunity(pk);
+    }
 }
