@@ -1,6 +1,7 @@
 package com.cutegyuseok.freetalk.category.dto;
 
 import com.cutegyuseok.freetalk.category.entity.Category;
+import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -67,13 +68,13 @@ public class CategoryDTO {
     }
 
     @Getter
-    public static class viewCategoryForProduct {
-        private String categoryName;
+    public static class viewCategoryForCommunity {
+            private String categoryName;
         private Long categoryPk;
 
-        public viewCategoryForProduct(Category category) {
-            this.categoryName = category.getName();
-            this.categoryPk = category.getPk();
+        public viewCategoryForCommunity(CommunityCategory communityCategory) {
+            this.categoryName = communityCategory.getCategory().getName();
+            this.categoryPk = communityCategory.getCategory().getPk();
         }
     }
 
