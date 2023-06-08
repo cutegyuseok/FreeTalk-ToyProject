@@ -3,6 +3,7 @@ package com.cutegyuseok.freetalk.community.service.impl;
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.repository.UserRepository;
+import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.category.entity.Category;
 import com.cutegyuseok.freetalk.category.repository.CategoryRepository;
 import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
@@ -60,6 +61,23 @@ public class CommunityServiceImpl implements CommunityService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }catch(Exception e){
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> showCommunity(Long pk) {
+        try {
+            Community community = communityRepository.findById(pk).orElseThrow(NoSuchElementException::new);
+            List<CategoryDTO.viewCategoryForCommunity> categories = new ArrayList<>();
+            for (CommunityCategory communityCategory : community.getCommunityCategoryList()){
+                categories.add(new CategoryDTO.viewCategoryForCommunity(communityCategory));
+            }
+            UserDTO.ShowOwnerDTO owner = new UserDTO.ShowOwnerDTO(community.getUser());
+            return new ResponseEntity<>(new CommunityDTO.ShowCommunityDTO(community,categories,owner),HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -7,4 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface CommunityService {
 
     ResponseEntity<?> createCommunity(CommunityDTO.MakeCommunityDTO dto, UserDTO.UserAccessDTO userAccessDTO);
+    ResponseEntity<?> showCommunity(Long pk);
 }
