@@ -128,7 +128,8 @@ public class UserDTO {
     @Getter
     @ApiModel(value = "프로필 조회")
     public static class ProfileCheckReqDTO {
-
+        @ApiModelProperty(value = "pk")
+        private Long pk;
         @ApiModelProperty(value = "이메일")
         private String email;
         @ApiModelProperty(value = "이름")
@@ -141,11 +142,25 @@ public class UserDTO {
         private String selfIntroduction;
 
         public ProfileCheckReqDTO(User user) {
+            this.pk = user.getPk();
             this.email = user.getEmail();
             this.name = user.getName();
             this.nickName = user.getNickName();
             this.profileImage = user.getProfileImage();
             this.selfIntroduction = user.getSelfIntroduction();
+        }
+    }
+
+    @Getter
+    public static class ShowOwnerDTO{
+        private Long pk;
+        private String nickName;
+        private String profileImage;
+
+        public ShowOwnerDTO(User user) {
+            this.pk = user.getPk();
+            this.nickName = user.getNickName();
+            this.profileImage = user.getProfileImage();
         }
     }
 }
