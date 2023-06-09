@@ -135,6 +135,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User getUser(UserDTO.UserAccessDTO userAccessDTO) {
+        return userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+    }
+
 
     public String makeCoe() {
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

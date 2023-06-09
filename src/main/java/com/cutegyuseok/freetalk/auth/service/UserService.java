@@ -1,6 +1,7 @@
 package com.cutegyuseok.freetalk.auth.service;
 
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
+import com.cutegyuseok.freetalk.auth.entity.User;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -15,4 +16,6 @@ public interface UserService {
     ResponseEntity<?> updateUserProfile(UserDTO.UserAccessDTO userAccessDTO, UserDTO.ProfileUpdateReqDTO dto);
 
     ResponseEntity<?> checkUserInfo(UserDTO.UserAccessDTO userAccessDTO);
+
+    User getUser(UserDTO.UserAccessDTO userAccessDTO);
 }
