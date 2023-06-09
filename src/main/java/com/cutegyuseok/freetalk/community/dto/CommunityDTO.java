@@ -3,6 +3,7 @@ package com.cutegyuseok.freetalk.community.dto;
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
+import com.cutegyuseok.freetalk.community.entity.Join;
 import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +21,7 @@ public class CommunityDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(value = "커뮤니티 생성", description = "이름,소개,상태,")
+    @ApiModel(value = "커뮤니티 생성", description = "이름,소개,메인 이미지,배경 이미지,카테고리 PK 리스트")
     public static class MakeCommunityDTO {
         @ApiModelProperty(value = "생성할 커뮤니티 이름", required = true)
         private String communityName;
@@ -31,6 +32,22 @@ public class CommunityDTO {
         @ApiModelProperty(value = "커뮤니티 배경 이미지", required = true)
         private String communityBackgroundImage;
         @ApiModelProperty(value = "해당 커뮤니티 카테고리", required = true)
+        private List<Long> categoryIdList = new ArrayList<>();
+
+    }
+    @Getter
+    @NoArgsConstructor
+    @ApiModel(value = "커뮤니티 수정", description = "이름,소개,상태,")
+    public static class UpdateCommunityDTO {
+        @ApiModelProperty(value = "수정할 커뮤니티 이름")
+        private String communityName;
+        @ApiModelProperty(value = "커뮤니티 소개")
+        private String communityIntroduce;
+        @ApiModelProperty(value = "커뮤니티 메인 이미지")
+        private String communityMainImage;
+        @ApiModelProperty(value = "커뮤니티 배경 이미지")
+        private String communityBackgroundImage;
+        @ApiModelProperty(value = "해당 커뮤니티 카테고리",required = true)
         private List<Long> categoryIdList = new ArrayList<>();
 
     }
@@ -48,15 +65,31 @@ public class CommunityDTO {
         private List<CategoryDTO.viewCategoryForCommunity> categoryList;
         private UserDTO.ShowOwnerDTO owner;
 
-        public ShowCommunityDTO(Community community, List<CategoryDTO.viewCategoryForCommunity> categoryList, UserDTO.ShowOwnerDTO owner) {
+        public ShowCommunityDTO(Community community, UserDTO.ShowOwnerDTO owner) {
             this.pk = community.getPk();
             this.name = community.getName();
             this.introduce = community.getIntroduce();
             this.status = community.getStatus();
             this.mainImage = community.getMainImage();
             this.backgroundImage = community.getBackgroundImage();
-            this.categoryList = categoryList;
+            this.categoryList = community.communityCategoryListDTO();
             this.owner = owner;
+        }
+    }
+    @Getter
+    @NoArgsConstructor
+    @ApiModel(value = "커뮤니티 리스트 조회", description = "이름,소개,상태,")
+    public static class ShowCommunityListDTO {
+        private Long pk;
+        private String name;
+        private String mainImage;
+        private List<CategoryDTO.viewCategoryForCommunity> categoryList;
+
+        public ShowCommunityListDTO(Community community){
+            this.pk = community.getPk();
+            this.name = community.getName();
+            this.mainImage = community.getMainImage();
+            this.categoryList = community.communityCategoryListDTO();
         }
     }
 }
