@@ -36,8 +36,21 @@ public class CommunityController {
         return communityService.showCommunity(communityPk);
     }
 
-    @GetMapping("/{pk}")
-    public ResponseEntity<?> showCommunity(@PathVariable Long pk){
-        return communityService.showCommunity(pk);
+    @PostMapping("/join/{communityPk}")
+    @ApiOperation(value = "커뮤니티 참여", notes = "code: 201 참여 성공,400 존재하지 않는 PK가 입력됨,500 서버에러")
+    public ResponseEntity<?> joinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk){
+        return communityService.joinCommunity(userAccessDTO,communityPk);
     }
+    @DeleteMapping("/join/{communityPk}")
+    @ApiOperation(value = "커뮤니티 탈퇴", notes = "code: 200 탈퇴 성공,400 존재하지 않는 PK가 입력됨,500 서버에러")
+    public ResponseEntity<?> disJoinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk){
+        return communityService.disJoinCommunity(userAccessDTO,communityPk);
+    }
+
+    @GetMapping("/join")
+    @ApiOperation(value = "참여한 커뮤니티 조회", notes = "code: 200 조회 성공,500 서버에러")
+    public ResponseEntity<?> showJoinedCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+        return communityService.showJoinedCommunity(userAccessDTO);
+    }
+
 }
