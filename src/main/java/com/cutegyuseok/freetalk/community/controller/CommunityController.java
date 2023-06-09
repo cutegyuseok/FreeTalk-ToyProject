@@ -24,6 +24,17 @@ public class CommunityController {
     public ResponseEntity<?> makeCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody CommunityDTO.MakeCommunityDTO dto){
         return communityService.createCommunity(dto,userAccessDTO);
     }
+    @PatchMapping("/{communityPk}")
+    @ApiOperation(value = "커뮤니티 수정", notes = "code: 200 커뮤니티 수정됨, 406 이미 존재하는 이름,404 카테고리중 존재하지 않는 PK가 입력됨,401사용자 인증 오류 ,500 서버에러")
+    public ResponseEntity<?> updateCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk, @RequestBody CommunityDTO.UpdateCommunityDTO dto){
+        return communityService.updateCommunity(communityPk,dto,userAccessDTO);
+    }
+
+    @GetMapping("/{communityPk}")
+    @ApiOperation(value = "커뮤니티 단일 조회", notes = "code: 200 조회 성공,404 존재하지 않는 PK가 입력됨,500 서버에러")
+    public ResponseEntity<?> showCommunity(@PathVariable Long communityPk){
+        return communityService.showCommunity(communityPk);
+    }
 
     @GetMapping("/{pk}")
     public ResponseEntity<?> showCommunity(@PathVariable Long pk){
