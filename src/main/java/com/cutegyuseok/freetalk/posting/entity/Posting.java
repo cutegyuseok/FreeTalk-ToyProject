@@ -5,6 +5,7 @@ import com.cutegyuseok.freetalk.community.entity.Community;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -50,6 +51,7 @@ public class Posting {
     private String hashtag;
 
     @Column(name = "view_count")
+    @ColumnDefault("0")
     private Long viewCount;
 
     @CreatedDate
