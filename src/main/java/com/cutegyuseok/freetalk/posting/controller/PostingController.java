@@ -19,7 +19,7 @@ public class PostingController {
     private final PostingService postingService;
 
     @PostMapping("/{communityPK}")
-    @ApiOperation(value = "게시글 게시", notes = "code: 201 게시글 생성됨, 400 잘못된 요청, 500 서버에러")
+    @ApiOperation(value = "게시글 게시", notes = "code: 201 게시글 생성됨, 400 잘못된 요청,406 커뮤니티 가입 필요, 500 서버에러")
     public ResponseEntity<?> uploadPosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
                                            @PathVariable Long communityPK,
                                            @RequestBody PostingDTO.UploadPosting postingDTO){

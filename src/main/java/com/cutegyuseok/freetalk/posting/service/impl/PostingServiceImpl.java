@@ -4,6 +4,7 @@ import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.service.UserService;
 import com.cutegyuseok.freetalk.community.entity.Community;
+import com.cutegyuseok.freetalk.community.repository.JoinRepository;
 import com.cutegyuseok.freetalk.community.service.CommunityService;
 import com.cutegyuseok.freetalk.posting.dto.PostingDTO;
 import com.cutegyuseok.freetalk.posting.entity.Posting;
@@ -14,15 +15,18 @@ import com.cutegyuseok.freetalk.posting.service.PostingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
+@Service
 public class PostingServiceImpl implements PostingService {
 
     private final PostingRepository postingRepository;
     private final CommunityService communityService;
     private final UserService userService;
+    private final JoinRepository joinRepository;
 
 
     @Override
@@ -30,6 +34,9 @@ public class PostingServiceImpl implements PostingService {
         try {
             Community community = communityService.getCommunityEntity(communityPK);
             User user = userService.getUser(userAccessDTO);
+            if (!joinRepository.existsByCommunityAndUser(community,user)){
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
             Posting posting = Posting.builder()
                     .user(user)
                     .community(community)
@@ -41,7 +48,7 @@ public class PostingServiceImpl implements PostingService {
                     .type(PostingType.NORMAL)
                     .build();
             postingRepository.save(posting);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
