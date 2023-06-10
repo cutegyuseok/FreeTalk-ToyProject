@@ -67,10 +67,8 @@ public class Posting {
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private PostingType type;
-
     @Builder
-    public Posting(Long pk, User user, Community community, String title, String thumbnail, String contents, String hashtag, PostingStatus status, PostingType type) {
-        this.pk = pk;
+    public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag, PostingStatus status, PostingType type) {
         this.user = user;
         this.community = community;
         this.title = title;
