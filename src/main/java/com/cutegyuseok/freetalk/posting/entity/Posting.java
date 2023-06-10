@@ -50,8 +50,7 @@ public class Posting {
     @Column(name = "hashtag", nullable = false)
     private String hashtag;
 
-    @Column(name = "view_count")
-    @ColumnDefault("0")
+    @Column(name = "view_count",nullable = false)
     private Long viewCount;
 
     @CreatedDate
@@ -70,13 +69,14 @@ public class Posting {
     @Enumerated(EnumType.STRING)
     private PostingType type;
     @Builder
-    public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag, PostingStatus status, PostingType type) {
+    public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag,Long viewCount,PostingStatus status, PostingType type) {
         this.user = user;
         this.community = community;
         this.title = title;
         this.thumbnail = thumbnail;
         this.contents = contents;
         this.hashtag = hashtag;
+        this.viewCount = viewCount;
         this.status = status;
         this.type = type;
     }

@@ -52,9 +52,6 @@ public class Comment {
     @Enumerated(EnumType.STRING)
     private PostingStatus status;
 
-    @Column(name = "lelvel")
-    private int level;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
     private Comment parent;
@@ -63,13 +60,11 @@ public class Comment {
     private List<Comment> children = new ArrayList<>();
 
     @Builder
-    public Comment(Long pk, User user, Posting posting, String contents, PostingStatus status, int level, Comment parent) {
-        this.pk = pk;
+    public Comment(User user, Posting posting, String contents, PostingStatus status, Comment parent) {
         this.user = user;
         this.posting = posting;
         this.contents = contents;
         this.status = status;
-        this.level = level;
         this.parent = parent;
     }
 }
