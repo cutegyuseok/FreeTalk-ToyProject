@@ -171,6 +171,10 @@ public class CommunityServiceImpl implements CommunityService {
         }
     }
 
+    @Override
+    public Community getCommunityEntity(Long id) {
+        return communityRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
 
 
 }
