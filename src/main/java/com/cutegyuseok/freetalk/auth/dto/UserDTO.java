@@ -153,14 +153,26 @@ public class UserDTO {
 
     @Getter
     public static class ShowOwnerDTO{
-        private Long pk;
+        private Long userPK;
         private String nickName;
         private String profileImage;
+        private String selfIntroduction;
 
         public ShowOwnerDTO(User user) {
-            this.pk = user.getPk();
+            this.userPK = user.getPk();
             this.nickName = user.getNickName();
             this.profileImage = user.getProfileImage();
+            this.selfIntroduction = user.getSelfIntroduction();
+        }
+    }
+    @Getter
+    public static class ShowOwnerSimpleDTO{
+        private Long userPK;
+        private String nickName;
+
+        public ShowOwnerSimpleDTO(User user) {
+            this.userPK = user.getPk();
+            this.nickName = user.getNickName();
         }
     }
 }

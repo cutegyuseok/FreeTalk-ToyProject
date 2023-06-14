@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.posting.service.impl;
 
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
+import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.UserService;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
@@ -38,6 +39,7 @@ public class PostingServiceImpl implements PostingService {
     private final JoinRepository joinRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -100,10 +102,16 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public ResponseEntity<?> showComments(Long postPK) {
+    public ResponseEntity<?> showComments(UserDTO.UserAccessDTO userAccessDTO,Long postPK) {
         try {
+            User viewer;
+            if (userAccessDTO==null){
+                viewer = null;
+            }else {
+                viewer = userRepository.findByEmail(userAccessDTO.getEmail()).orElse(null);
+            }
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
-            List<PostingDTO.ViewComments> list = commentRepository.findAllByPostingAndParentIsNull(posting).stream().map(PostingDTO.ViewComments::of).collect(Collectors.toList());
+            List<PostingDTO.ViewComments> list = commentRepository.findAllByPostingAndParentIsNull(posting).stream().map(e-> PostingDTO.ViewComments.of(e,viewer)).collect(Collectors.toList());
             if (list.size() < 1) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -111,6 +119,27 @@ public class PostingServiceImpl implements PostingService {
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> showPosting(UserDTO.UserAccessDTO userAccessDTO,Long postPK) {
+        try {
+            User viewer;
+            if (userAccessDTO==null){
+                viewer = null;
+            }else {
+                viewer = userRepository.findByEmail(userAccessDTO.getEmail()).orElse(null);
+            }
+            Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
+            PostingDTO.ViewPosting result = new PostingDTO.ViewPosting(posting,posting.whetherToVote(viewer));
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

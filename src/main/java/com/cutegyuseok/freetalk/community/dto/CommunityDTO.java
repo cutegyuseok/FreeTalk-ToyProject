@@ -37,7 +37,7 @@ public class CommunityDTO {
     }
     @Getter
     @NoArgsConstructor
-    @ApiModel(value = "커뮤니티 수정", description = "이름,소개,상태,")
+    @ApiModel(value = "커뮤니티 수정", description = "이름,소개,메인 이미지,배경 이미지,카테고리 id 리스트")
     public static class UpdateCommunityDTO {
         @ApiModelProperty(value = "수정할 커뮤니티 이름")
         private String communityName;
@@ -54,7 +54,7 @@ public class CommunityDTO {
 
     @Getter
     @NoArgsConstructor
-    @ApiModel(value = "커뮤니티 단일 조회", description = "이름,소개,상태,")
+    @ApiModel(value = "커뮤니티 단일 조회")
     public static class ShowCommunityDTO {
         private Long pk;
         private String name;
@@ -78,7 +78,7 @@ public class CommunityDTO {
     }
     @Getter
     @NoArgsConstructor
-    @ApiModel(value = "커뮤니티 리스트 조회", description = "이름,소개,상태,")
+    @ApiModel(value = "커뮤니티 리스트 조회")
     public static class ShowCommunityListDTO {
         private Long pk;
         private String name;
@@ -90,6 +90,19 @@ public class CommunityDTO {
             this.name = community.getName();
             this.mainImage = community.getMainImage();
             this.categoryList = community.communityCategoryListDTO();
+        }
+    }
+    @Getter
+    @ApiModel(value = "커뮤니티 간단 조회")
+    public static class ShowCommunitySimpleDTO {
+        private Long pk;
+        private String name;
+        private String mainImage;
+
+        public ShowCommunitySimpleDTO(Community community){
+            this.pk = community.getPk();
+            this.name = community.getName();
+            this.mainImage = community.getMainImage();
         }
     }
 }

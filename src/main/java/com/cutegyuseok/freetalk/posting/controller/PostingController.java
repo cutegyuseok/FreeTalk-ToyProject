@@ -25,6 +25,11 @@ public class PostingController {
                                            @RequestBody PostingDTO.UploadPosting postingDTO){
         return postingService.uploadPosting(userAccessDTO,communityPK,postingDTO);
     }
+    @GetMapping("/{postPK}")
+    @ApiOperation(value = "게시글 조회", notes = "code: 200 조회 성공, 404 잘못된 요청, 500 서버에러")
+    public ResponseEntity<?> showPosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long postPK){
+        return postingService.showPosting(userAccessDTO,postPK);
+    }
 
     @PostMapping("/comment/{postPK}")
     @ApiOperation(value = "댓글 게시", notes = "code: 201 댓글 생성됨, 400 잘못된 요청,406 커뮤니티 가입 필요, 500 서버에러")
@@ -34,9 +39,9 @@ public class PostingController {
         return postingService.uploadComment(userAccessDTO,postPK,commentDTO);
     }
     @GetMapping("/comment/{postPK}")
-    @ApiOperation(value = "댓글 조회", notes = "code: 200 조회 성공, 400 잘못된 요청,406 커뮤니티 가입 필요, 500 서버에러")
-    public ResponseEntity<?> showComments(@PathVariable Long postPK){
-        return postingService.showComments(postPK);
+    @ApiOperation(value = "댓글 조회", notes = "code: 200 조회 성공, 404 잘못된 요청, 500 서버에러")
+    public ResponseEntity<?> showComments(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long postPK){
+        return postingService.showComments(userAccessDTO,postPK);
     }
 
     @PostMapping("/vote/{PK}")

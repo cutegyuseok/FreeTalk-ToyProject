@@ -44,7 +44,7 @@ public class Posting {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "thumbnail", nullable = false)
+    @Column(name = "thumbnail")
     private String thumbnail;
 
     @Column(name = "contents", nullable = false)
@@ -79,6 +79,21 @@ public class Posting {
         return voteList.stream().filter(vote -> vote.getLike() ==1).count();
     }
 
+    public String whetherToVote(User user){
+        String result = "none";
+        if (user!=null) {
+            for (Vote vote : voteList) {
+                if (vote.getUser() == user) {
+                    if (vote.getLike() == 1) {
+                        result = "liked";
+                    } else if (vote.getLike() == -1) {
+                        result = "disliked";
+                    }
+                }
+            }
+        }
+        return result;
+    }
     @Builder
     public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag,Long viewCount,PostingStatus status, PostingType type) {
         this.user = user;
