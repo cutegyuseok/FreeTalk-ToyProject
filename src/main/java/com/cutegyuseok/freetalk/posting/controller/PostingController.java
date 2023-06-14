@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = {"게시 서비스"}, description = "게시글 관련 서비스")
+@Api(tags = {"게시글 서비스"}, description = "게시글 관련 서비스")
 @CrossOrigin(origins = "*")
 @RequestMapping("/posting")
 public class PostingController {
@@ -37,6 +37,14 @@ public class PostingController {
     @ApiOperation(value = "댓글 조회", notes = "code: 200 조회 성공, 400 잘못된 요청,406 커뮤니티 가입 필요, 500 서버에러")
     public ResponseEntity<?> showComments(@PathVariable Long postPK){
         return postingService.showComments(postPK);
+    }
+
+    @PostMapping("/vote/{PK}")
+    @ApiOperation(value = "투표 기능", notes = "code: ")
+    public ResponseEntity<?> voteRequest(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
+                                           @PathVariable Long PK,
+                                           @RequestBody PostingDTO.VoteReqDTO voteReqDTO){
+        return postingService.voteRequest(userAccessDTO,PK,voteReqDTO);
     }
 
 }

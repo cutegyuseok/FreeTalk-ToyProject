@@ -58,7 +58,15 @@ public class Comment {
 
     @OneToMany(mappedBy = "parent")
     private List<Comment> children = new ArrayList<>();
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Vote> voteList = new ArrayList<>();
 
+    public long likeNum(){
+        for (Vote vote : voteList){
+            System.out.println("투표");
+        }
+        return voteList.stream().filter(vote -> vote.getLike() ==1).count();
+    }
     @Builder
     public Comment(User user, Posting posting, String contents, PostingStatus status, Comment parent) {
         this.user = user;

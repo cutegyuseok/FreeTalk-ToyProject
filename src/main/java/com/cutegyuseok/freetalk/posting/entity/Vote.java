@@ -6,6 +6,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,15 +35,17 @@ public class Vote {
     @JoinColumn(name = "posting")
     private Posting posting;
 
-    @Column(name = "liked")
+    @Column(name = "liked",nullable = false)
     private Integer like;
 
     @Builder
-    public Vote(Long pk, User user, Comment comment, Posting posting, Integer like) {
-        this.pk = pk;
+    public Vote(User user, Comment comment, Posting posting, Integer like) {
         this.user = user;
         this.comment = comment;
         this.posting = posting;
+        this.like = like;
+    }
+    public void updateVote (Integer like){
         this.like = like;
     }
 }

@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.posting.entity;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.community.entity.Community;
+import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import lombok.*;
@@ -14,6 +15,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -68,6 +71,14 @@ public class Posting {
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private PostingType type;
+
+    @OneToMany(mappedBy = "posting", fetch = FetchType.LAZY)
+    private List<Vote> voteList = new ArrayList<>();
+
+    public long likeNum(){
+        return voteList.stream().filter(vote -> vote.getLike() ==1).count();
+    }
+
     @Builder
     public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag,Long viewCount,PostingStatus status, PostingType type) {
         this.user = user;

@@ -6,6 +6,7 @@ import com.cutegyuseok.freetalk.posting.entity.Comment;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
@@ -38,25 +39,41 @@ public class PostingDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class ViewComments {
         private Long commentPK;
         private String contents;
         private String userNickName;
         private String updatedDate;
         private PostingStatus status;
+        private Long likes;
+        private Long dislikes;
         private List<PostingDTO.ViewComments> children;
+
 
         public static PostingDTO.ViewComments of(Comment comment) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
+            long likeNum = comment.likeNum();
             return new PostingDTO.ViewComments(
                     comment.getPk(),
                     comment.getContents(),
                     comment.getUser().getNickName(),
                     comment.getUpdatedDate().format(dateTimeFormatter),
                     comment.getStatus(),
+                    likeNum,
+                    comment.getVoteList().size()-likeNum,
                     comment.getChildren().stream().map(PostingDTO.ViewComments::of).collect(Collectors.toList())
             );
         }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class VoteReqDTO{
+        @ApiModelProperty(value = "타입 (POSTING or COMMENT", required = true)
+        private String type;
+        @ApiModelProperty(value = "좋아요:true or 싫어요:false", required = true)
+        private Boolean like;
     }
 
 }

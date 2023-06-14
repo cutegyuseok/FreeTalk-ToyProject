@@ -10,10 +10,12 @@ import com.cutegyuseok.freetalk.community.service.CommunityService;
 import com.cutegyuseok.freetalk.posting.dto.PostingDTO;
 import com.cutegyuseok.freetalk.posting.entity.Comment;
 import com.cutegyuseok.freetalk.posting.entity.Posting;
+import com.cutegyuseok.freetalk.posting.entity.Vote;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import com.cutegyuseok.freetalk.posting.repository.CommentRepository;
 import com.cutegyuseok.freetalk.posting.repository.PostingRepository;
+import com.cutegyuseok.freetalk.posting.repository.VoteRepository;
 import com.cutegyuseok.freetalk.posting.service.PostingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.NotAcceptableStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -34,6 +37,7 @@ public class PostingServiceImpl implements PostingService {
     private final UserService userService;
     private final JoinRepository joinRepository;
     private final CommentRepository commentRepository;
+    private final VoteRepository voteRepository;
 
 
     @Override
@@ -104,6 +108,50 @@ public class PostingServiceImpl implements PostingService {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(list, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> voteRequest(UserDTO.UserAccessDTO userAccessDTO, Long PK, PostingDTO.VoteReqDTO voteReqDTO) {
+        try {
+            Posting posting=null;
+            Comment comment=null;
+            if (voteReqDTO.getType().equalsIgnoreCase("POSTING")) {
+                posting = postingRepository.findById(PK).orElseThrow(NoSuchElementException::new);
+            } else if (voteReqDTO.getType().equalsIgnoreCase("COMMENT")) {
+                comment = commentRepository.findById(PK).orElseThrow(NoSuchElementException::new);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            User user = userService.getUser(userAccessDTO);
+            int like;
+            if (voteReqDTO.getLike()){
+                like=1;
+            }else like=-1;
+
+            Vote vote = voteRepository.findByUserAndCommentAndPosting(user,comment,posting).orElse(null);
+            if (vote!=null){
+                if (like==vote.getLike()){
+                    return new ResponseEntity<>(HttpStatus.CONFLICT);
+                }else {
+                    vote.updateVote(like);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }else {
+                vote = Vote.builder()
+                        .user(user)
+                        .comment(comment)
+                        .posting(posting)
+                        .like(like)
+                        .build();
+                voteRepository.save(vote);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
