@@ -40,7 +40,7 @@ public class PostingController {
     }
 
     @PostMapping("/vote/{PK}")
-    @ApiOperation(value = "투표 기능", notes = "code: ")
+    @ApiOperation(value = "투표 기능", notes = "type : POSTING || COMMENT \n\n code: 201 요청 성공, 200 수정됨, 409 이미 반영된 의견, 400 옳바르지 않은 TYPE, 404 잘못된 pk 또는 사용자, 500 서버에러")
     public ResponseEntity<?> voteRequest(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
                                            @PathVariable Long PK,
                                            @RequestBody PostingDTO.VoteReqDTO voteReqDTO){
