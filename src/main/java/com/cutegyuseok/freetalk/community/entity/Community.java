@@ -4,6 +4,7 @@ import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
+import com.cutegyuseok.freetalk.posting.entity.Posting;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -57,6 +58,12 @@ public class Community {
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommunityCategory> communityCategoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    private List<Join> joinedUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    private List<Posting> postingList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user",nullable = false)

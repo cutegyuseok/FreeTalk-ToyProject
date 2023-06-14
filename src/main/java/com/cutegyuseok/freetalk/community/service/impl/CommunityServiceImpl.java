@@ -17,7 +17,10 @@ import com.cutegyuseok.freetalk.community.repository.CommunityCategoryRepository
 import com.cutegyuseok.freetalk.community.repository.CommunityRepository;
 import com.cutegyuseok.freetalk.community.repository.JoinRepository;
 import com.cutegyuseok.freetalk.community.service.CommunityService;
+import com.cutegyuseok.freetalk.global.response.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Community_List_Size;
 
 @Service
 @RequiredArgsConstructor
@@ -166,7 +171,6 @@ public class CommunityServiceImpl implements CommunityService {
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -174,6 +178,28 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Community getCommunityEntity(Long id) {
         return communityRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public ResponseEntity<?> searchCommunity(String keyword, String sort, int page, Long categoryPK) {
+        try {
+            if (page < 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            PageRequest pageable = PageRequest.of(page - 1, Community_List_Size);
+            Category category = null;
+            if (categoryPK!=null){
+                category = categoryRepository.findById(categoryPK).orElse(null);
+            }
+            Page<Community> communityList = communityRepository.search(pageable, keyword, sort, category);
+            if (communityList.getTotalElements() < 1) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            PageResponseDTO pageResponseDTO = new PageResponseDTO(communityList);
+            pageResponseDTO.setContent(communityList.getContent().stream().map(CommunityDTO.ShowCommunityListDTO::new).collect(Collectors.toList()));
+            return new ResponseEntity<>(pageResponseDTO,HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

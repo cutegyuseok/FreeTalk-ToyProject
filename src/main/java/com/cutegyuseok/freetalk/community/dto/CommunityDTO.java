@@ -83,12 +83,16 @@ public class CommunityDTO {
         private Long pk;
         private String name;
         private String mainImage;
+        private int joinedPeople;
+        private int numberOfPostings;
         private List<CategoryDTO.viewCategoryForCommunity> categoryList;
 
         public ShowCommunityListDTO(Community community){
             this.pk = community.getPk();
             this.name = community.getName();
             this.mainImage = community.getMainImage();
+            this.joinedPeople = community.getJoinedUsers().size();
+            this.numberOfPostings = community.getPostingList().size();
             this.categoryList = community.communityCategoryListDTO();
         }
     }

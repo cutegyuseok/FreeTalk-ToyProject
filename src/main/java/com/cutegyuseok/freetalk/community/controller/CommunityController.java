@@ -53,4 +53,12 @@ public class CommunityController {
         return communityService.showJoinedCommunity(userAccessDTO);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<?> searchCommunity(@RequestParam(required = false) String keyword,
+                                             @RequestParam(required = false, defaultValue = "people") String sort,
+                                             @RequestParam(required = false, defaultValue = "1") int page,
+                                             @RequestParam(required = false) Long categoryPK){
+        return communityService.searchCommunity(keyword,sort,page,categoryPK);
+    }
+
 }
