@@ -6,9 +6,12 @@
     import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
     import com.cutegyuseok.freetalk.community.repository.CommunityRepositoryCustom;
     import com.cutegyuseok.freetalk.posting.entity.Posting;
+    import com.cutegyuseok.freetalk.posting.entity.Vote;
     import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
     import com.cutegyuseok.freetalk.posting.enumType.PostingType;
     import com.fasterxml.jackson.annotation.JsonProperty;
+    import com.querydsl.core.Query;
+    import com.querydsl.core.types.Expression;
     import com.querydsl.core.types.Order;
     import com.querydsl.core.types.OrderSpecifier;
     import com.querydsl.core.types.dsl.BooleanExpression;
@@ -115,7 +118,11 @@
             if (likes==null){
                 return null;
             }
-            return vote.like.eq(1).count().goe(likes);
+            return JPAExpressions
+                    .select(vote.count())
+                    .from(vote)
+                    .where(vote.posting.eq(posting).and(vote.like.eq(1)))
+                    .goe(Long.valueOf(likes));
         }
         private BooleanExpression filterByViewCount(Integer viewCount){
             if (viewCount==null){
@@ -178,9 +185,9 @@
                     return new OrderSpecifier<>(Order.ASC, posting.pk);
                 case "VIEWS":
                     return new OrderSpecifier<>(Order.DESC, posting.viewCount);
-                case "LIKES":
-                    return new OrderSpecifier<>(Order.DESC, vote.like.eq(1).count());
             }
             return null;
         }
     }
+
+
