@@ -52,7 +52,19 @@ public class PostingController {
         return postingService.voteRequest(userAccessDTO,PK,voteReqDTO);
     }
     @GetMapping("/")
-    @ApiOperation(value = "게시글 조회", notes = "code: 200 조회 성공,500 서버에러")
+    @ApiOperation(value = "게시글 조회", notes = "" +
+            "keyword : 검색어 \n\n" +
+            "keywordType : 검색 종류 (title,contents,nickname,tc (title & contents), all)\n\n" +
+            "sort : 정렬 (newest,latest,views,likes)\n\n" +
+            "page : 페이지 넘버\n\n" +
+            "communityPK : 커뮤니티 필터\n\n" +
+            "userPK : 사용자 필터\n\n" +
+            "likes : 좋아요 필터\n\n" +
+            "viewCount : 조회수 필터\n\n" +
+            "startDate : 값~게시글 필터\n\n" +
+            "endDate : 게시글~값 필터\n\n" +
+            "postingType : 게시글 종류 필터(notification,verified,suggest,normal,all)\n\n" +
+            "code: 200 조회 성공,500 서버에러")
     public ResponseEntity<?> searchPosting(@RequestParam(required = false) String keyword,
                                            @RequestParam(required = false) String keywordType,
                                            @RequestParam(required = false) String sort,
