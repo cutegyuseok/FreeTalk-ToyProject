@@ -11,4 +11,6 @@ public interface PostingService {
     ResponseEntity<?> showComments(UserDTO.UserAccessDTO userAccessDTO,Long postPK);
     ResponseEntity<?> showPosting(UserDTO.UserAccessDTO userAccessDTO,Long postPK);
     ResponseEntity<?> voteRequest(UserDTO.UserAccessDTO userAccessDTO,Long PK,PostingDTO.VoteReqDTO voteReqDTO);
+    ResponseEntity<?> searchPosting(String keyword,String keywordType,String sort,int page,Long communityPK,Long userPK,Integer likes,Integer viewCount,String startDate,String endDate,String postingType);
+
 }

@@ -125,5 +125,34 @@ public class PostingDTO {
         @ApiModelProperty(value = "좋아요:true or 싫어요:false", required = true)
         private Boolean like;
     }
+    @Getter
+    public static class PostingListDTO{
+        private Long postingPk;
+        private UserDTO.ShowOwnerSimpleDTO postingWriter;
+        private CommunityDTO.ShowCommunitySuperSimpleDTO postedCommunity;
+        private String title;
+        private String thumbnail;
+        private Long viewCount;
+        private String createdDate;
+        private PostingType postingType;
+        private Long likes;
+        private Long dislikes;
+
+        public PostingListDTO(Posting posting){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
+            long likeNum = posting.likeNum();
+            this.postingPk = posting.getPk();
+            this.postingWriter = new UserDTO.ShowOwnerSimpleDTO(posting.getUser());
+            this.postedCommunity = new CommunityDTO.ShowCommunitySuperSimpleDTO(posting.getCommunity());
+            this.title = posting.getTitle();
+            this.thumbnail = posting.getThumbnail();
+            this.viewCount = posting.getViewCount();
+            this.createdDate = posting.getCreatedDate().format(dateTimeFormatter);
+            this.postingType = posting.getType();
+            this.likes = likeNum;
+            this.dislikes = posting.getVoteList().size()-likeNum;
+        }
+    }
+
 
 }

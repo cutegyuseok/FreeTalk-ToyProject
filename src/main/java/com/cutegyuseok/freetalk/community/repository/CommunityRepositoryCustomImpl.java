@@ -57,14 +57,14 @@ public class CommunityRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     private OrderSpecifier<?> sort(String sort) {
-        switch (sort) {
-            case "newest":
+        switch (sort.toUpperCase()) {
+            case "NEWEST":
                 return new OrderSpecifier<>(Order.DESC, community.pk);
-            case "latest":
+            case "LATEST":
                 return new OrderSpecifier<>(Order.ASC, community.pk);
-            case "people":
+            case "PEOPLE":
                 return new OrderSpecifier<>(Order.DESC, community.joinedUsers.size());
-            case "posting":
+            case "POSTING":
                 return new OrderSpecifier<>(Order.DESC, community.postingList.size());
         }
         return null;

@@ -51,5 +51,20 @@ public class PostingController {
                                            @RequestBody PostingDTO.VoteReqDTO voteReqDTO){
         return postingService.voteRequest(userAccessDTO,PK,voteReqDTO);
     }
+    @GetMapping("/")
+    @ApiOperation(value = "게시글 조회", notes = "code: 200 조회 성공,500 서버에러")
+    public ResponseEntity<?> searchPosting(@RequestParam(required = false) String keyword,
+                                           @RequestParam(required = false) String keywordType,
+                                           @RequestParam(required = false) String sort,
+                                           @RequestParam(required = false, defaultValue = "1") int page,
+                                           @RequestParam(required = false) Long communityPK,
+                                           @RequestParam(required = false) Long userPK,
+                                           @RequestParam(required = false) Integer likes,
+                                           @RequestParam(required = false) Integer viewCount,
+                                           @RequestParam(required = false) String startDate,
+                                           @RequestParam(required = false) String endDate,
+                                           @RequestParam(required = false) String postingType){
+        return postingService.searchPosting(keyword,keywordType,sort,page,communityPK,userPK,likes,viewCount,startDate,endDate,postingType);
+    }
 
 }

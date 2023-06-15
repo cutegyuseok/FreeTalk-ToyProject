@@ -109,4 +109,15 @@ public class CommunityDTO {
             this.mainImage = community.getMainImage();
         }
     }
+    @Getter
+    @ApiModel(value = "커뮤니티 초간단 조회")
+    public static class ShowCommunitySuperSimpleDTO {
+        private Long pk;
+        private String name;
+
+        public ShowCommunitySuperSimpleDTO(Community community){
+            this.pk = community.getPk();
+            this.name = community.getName();
+        }
+    }
 }

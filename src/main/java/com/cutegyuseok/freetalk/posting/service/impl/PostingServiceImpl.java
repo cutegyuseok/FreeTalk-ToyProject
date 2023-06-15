@@ -5,9 +5,13 @@ import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.UserService;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
+import com.cutegyuseok.freetalk.category.entity.Category;
+import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
+import com.cutegyuseok.freetalk.community.repository.CommunityRepository;
 import com.cutegyuseok.freetalk.community.repository.JoinRepository;
 import com.cutegyuseok.freetalk.community.service.CommunityService;
+import com.cutegyuseok.freetalk.global.response.PageResponseDTO;
 import com.cutegyuseok.freetalk.posting.dto.PostingDTO;
 import com.cutegyuseok.freetalk.posting.entity.Comment;
 import com.cutegyuseok.freetalk.posting.entity.Posting;
@@ -19,15 +23,21 @@ import com.cutegyuseok.freetalk.posting.repository.PostingRepository;
 import com.cutegyuseok.freetalk.posting.repository.VoteRepository;
 import com.cutegyuseok.freetalk.posting.service.PostingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.NotAcceptableStatusException;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Community_List_Size;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +50,7 @@ public class PostingServiceImpl implements PostingService {
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
+    private final CommunityRepository communityRepository;
 
 
     @Override
@@ -186,6 +197,57 @@ public class PostingServiceImpl implements PostingService {
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> searchPosting(String keyword, String keywordType, String sort, int page, Long communityPK, Long userPK, Integer likes, Integer viewCount, String startDate, String endDate, String postingType) {
+        try {
+            //date
+            LocalDate start;
+            LocalDate end;
+            if (startDate!=null) {
+                start = LocalDate.parse(startDate).minusDays(1);
+            }else {
+                start = null;
+            }
+            if (endDate!=null){
+                end = LocalDate.parse(endDate).plusDays(1);
+            }else {
+                end = null;
+            }
+
+            // pageable
+            if (page < 1) {
+                throw new IllegalArgumentException();
+            }
+            PageRequest pageable = PageRequest.of(page - 1, Community_List_Size);
+
+            //community
+            Community  community = null;
+            if (communityPK!=null){
+                community = communityRepository.findById(communityPK).orElse(null);
+            }
+
+            //user
+            User  user = null;
+            if (userPK!=null){
+                user = userRepository.findById(userPK).orElse(null);
+            }
+            Page<Posting> postings = postingRepository.search(keyword,keywordType,sort,pageable,community,user,likes,viewCount,start,end,postingType);
+            if (postings.getTotalElements() < 1) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            PageResponseDTO pageResponseDTO = new PageResponseDTO(postings);
+            pageResponseDTO.setContent(postings.getContent().stream().map(PostingDTO.PostingListDTO::new).collect(Collectors.toList()));
+            return new ResponseEntity<>(pageResponseDTO,HttpStatus.OK);
+        }catch (DateTimeParseException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    public LocalDate formatDate(String date){
+        return LocalDate.parse(date);
     }
 
 }
