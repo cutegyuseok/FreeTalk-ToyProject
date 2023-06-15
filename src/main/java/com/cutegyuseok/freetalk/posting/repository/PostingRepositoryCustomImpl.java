@@ -185,6 +185,8 @@
                     return new OrderSpecifier<>(Order.ASC, posting.pk);
                 case "VIEWS":
                     return new OrderSpecifier<>(Order.DESC, posting.viewCount);
+                case "LIKES":
+                    return new OrderSpecifier<>(Order.DESC, vote.like.eq(1).count()); //select p.* from posting p left outer join vote v on p.pk =v.posting order by (select count(*) from vote v2  where v2.posting  =p.pk and v.liked =1 ) desc ;
             }
             return null;
         }
