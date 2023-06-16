@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.posting.service.impl;
 
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
+import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.UserService;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
@@ -145,6 +146,9 @@ public class PostingServiceImpl implements PostingService {
                 viewer = userRepository.findByEmail(userAccessDTO.getEmail()).orElse(null);
             }
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
+            if (!posting.getStatus().equals(PostingStatus.POSTED)){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             PostingDTO.ViewPosting result = new PostingDTO.ViewPosting(posting,posting.whetherToVote(viewer));
             return new ResponseEntity<>(result,HttpStatus.OK);
         }catch (NoSuchElementException e){
@@ -246,8 +250,26 @@ public class PostingServiceImpl implements PostingService {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public LocalDate formatDate(String date){
-        return LocalDate.parse(date);
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> deletePosting(UserDTO.UserAccessDTO userAccessDTO, Long postPK) {
+        try {
+            User user = userService.getUser(userAccessDTO);
+            Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
+            if (!posting.getUser().equals(user)){
+                if (!user.getRole().equals(UserRole.ROLE_SUPER)) {
+                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                }
+            }
+            posting.deletePosting();
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
 }

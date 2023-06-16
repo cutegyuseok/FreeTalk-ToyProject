@@ -26,7 +26,7 @@ public class PostingController {
         return postingService.uploadPosting(userAccessDTO,communityPK,postingDTO);
     }
     @GetMapping("/{postPK}")
-    @ApiOperation(value = "게시글 조회", notes = "code: 200 조회 성공, 404 잘못된 요청, 500 서버에러")
+    @ApiOperation(value = "게시글 단일 조회", notes = "code: 200 조회 성공,204 삭제됨, 404 잘못된 요청, 500 서버에러")
     public ResponseEntity<?> showPosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long postPK){
         return postingService.showPosting(userAccessDTO,postPK);
     }
@@ -77,6 +77,12 @@ public class PostingController {
                                            @RequestParam(required = false) String endDate,
                                            @RequestParam(required = false) String postingType){
         return postingService.searchPosting(keyword,keywordType,sort,page,communityPK,userPK,likes,viewCount,startDate,endDate,postingType);
+    }
+    @DeleteMapping("/{postPK}")
+    @ApiOperation(value = "게시글 삭제", notes = "code: 201 게시글 제거됨, 400 잘못된 요청,401 본인 아님, 500 서버에러")
+    public ResponseEntity<?> deletePosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
+                                           @PathVariable Long postPK){
+        return postingService.deletePosting(userAccessDTO,postPK);
     }
 
 }

@@ -106,4 +106,8 @@ public class Posting {
         this.status = status;
         this.type = type;
     }
+
+    public void deletePosting(){
+        this.status = PostingStatus.DELETED;
+    }
 }
