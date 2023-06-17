@@ -31,6 +31,7 @@ public class PostingRepositoryCustomImpl extends QuerydslRepositorySupport imple
     @Autowired
     private JPAQueryFactory queryFactory;
 
+
     public PostingRepositoryCustomImpl() {
         super(Posting.class);
     }
@@ -187,8 +188,9 @@ public class PostingRepositoryCustomImpl extends QuerydslRepositorySupport imple
             case "VIEWS":
                 return new OrderSpecifier<>(Order.DESC, posting.viewCount);
             case "LIKES":
-                return null; //select p.* from posting p left outer join vote v on p.pk =v.posting order by (select count(*) from vote v2  where v2.posting  =p.pk and v.liked =1 ) desc ;
+                return new OrderSpecifier<>(Order.DESC, vote.like.sum());
         }
+
         return null;
     }
 }
