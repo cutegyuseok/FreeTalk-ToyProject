@@ -176,7 +176,7 @@ public class PostingServiceImpl implements PostingService {
             int like;
             if (voteReqDTO.getLike()){
                 like=1;
-            }else like=-1;
+            }else like=0;
 
             Vote vote = voteRepository.findByUserAndCommentAndPosting(user,comment,posting).orElse(null);
             if (vote!=null){
