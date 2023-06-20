@@ -5,6 +5,7 @@ import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.category.entity.Category;
 import com.cutegyuseok.freetalk.category.repository.CategoryRepository;
 import com.cutegyuseok.freetalk.category.service.CategoryService;
+import com.cutegyuseok.freetalk.community.repository.CommunityCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CommunityCategoryRepository communityCategoryRepository;
 
 
     @Override
@@ -71,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> deleteCategory(Long categoryId) {
         try {
             Category category = categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
@@ -78,6 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
 //            커뮤니티-카테고리 연관 테이블에서 삭제
+            communityCategoryRepository.deleteAllByCategory(category);
             categoryRepository.delete(category);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
