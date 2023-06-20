@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Api(tags = {"관리자 커뮤니티 서비스"}, description = "커뮤니티 생성, 수정, 삭제")
 @CrossOrigin(origins = "*")
-@RequestMapping("/community/admin")
+@RequestMapping("/admin/community")
 public class AdminCommunityController {
 
     private final CommunityService communityService;
