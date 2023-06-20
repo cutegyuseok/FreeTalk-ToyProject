@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"사용자 서비스"}, description = "회원가입,로그인, 회원탈퇴, 토큰 리프레시")
+@Api(tags = {"사용자 서비스"}, description = "사용자 정보 관리 서비스")
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
