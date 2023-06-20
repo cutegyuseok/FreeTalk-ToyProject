@@ -16,10 +16,12 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.cutegyuseok.freetalk.community.entity.QCommunity.community;
 import static com.cutegyuseok.freetalk.community.entity.QCommunityCategory.communityCategory;
 import static com.cutegyuseok.freetalk.community.entity.QJoin.join;
-public class CommunityRepositoryCustomImpl extends QuerydslRepositorySupport implements CommunityRepositoryCustom{
+
+public class CommunityRepositoryCustomImpl extends QuerydslRepositorySupport implements CommunityRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory queryFactory;
@@ -27,31 +29,35 @@ public class CommunityRepositoryCustomImpl extends QuerydslRepositorySupport imp
     public CommunityRepositoryCustomImpl() {
         super(Community.class);
     }
+
     @Override
     public Page<Community> search(Pageable pageable, String keyword, String sort, Category category) {
         JPQLQuery<Community> query = queryFactory
                 .selectFrom(community)
-                .leftJoin(community.communityCategoryList,communityCategory)
-                .leftJoin(community.joinedUsers,join)
+                .leftJoin(community.communityCategoryList, communityCategory)
+                .leftJoin(community.joinedUsers, join)
                 .groupBy(community.pk)
-                .where(containsKeyword(keyword),containCategory(category),isAvailableCommunity())
+                .where(containsKeyword(keyword), containCategory(category), isAvailableCommunity())
                 .orderBy(sort(sort));
         List<Community> communityList = this.getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<Community>(communityList, pageable, query.fetchCount());
     }
+
     private BooleanExpression containsKeyword(String keyword) {
-        if (keyword==null) {
+        if (keyword == null) {
             return null;
         }
         return community.name.contains(keyword)
                 .or(community.introduce.contains(keyword));
     }
+
     private BooleanExpression containCategory(Category category) {
-        if (category==null){
+        if (category == null) {
             return null;
         }
         return communityCategory.category.in(listOfCategory(category));
     }
+
     private BooleanExpression isAvailableCommunity() {
         return community.status.eq(CommunityStatus.AVAILABLE);
     }
@@ -69,6 +75,7 @@ public class CommunityRepositoryCustomImpl extends QuerydslRepositorySupport imp
         }
         return null;
     }
+
     private List<Category> listOfCategory(Category category) {
         List<Category> categoryList = new ArrayList<>(category.getChildren());
         categoryList.add(category);

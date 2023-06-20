@@ -70,8 +70,8 @@ public class CategoryDTO {
     @Getter
     @ApiModel(value = "카테고리 리스트 출력 DTO")
     public static class viewCategoryForCommunity {
-            private String categoryName;
-        private Long categoryPk;
+        private final String categoryName;
+        private final Long categoryPk;
 
         public viewCategoryForCommunity(CommunityCategory communityCategory) {
             this.categoryName = communityCategory.getCategory().getName();

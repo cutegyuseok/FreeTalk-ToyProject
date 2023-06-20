@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface JoinRepository extends JpaRepository<Join, Long> {
     Boolean existsByCommunityAndUser(Community community, User user);
-    void deleteByCommunityAndUser(Community community,User user);
+
+    void deleteByCommunityAndUser(Community community, User user);
+
     List<Join> findAllByUser(User user);
 }

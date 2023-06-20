@@ -2,11 +2,9 @@ package com.cutegyuseok.freetalk.posting.entity;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.community.entity.Community;
-import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -53,7 +51,7 @@ public class Posting {
     @Column(name = "hashtag", nullable = false)
     private String hashtag;
 
-    @Column(name = "view_count",nullable = false)
+    @Column(name = "view_count", nullable = false)
     private Long viewCount;
 
     @CreatedDate
@@ -75,13 +73,13 @@ public class Posting {
     @OneToMany(mappedBy = "posting", fetch = FetchType.LAZY)
     private List<Vote> voteList = new ArrayList<>();
 
-    public long likeNum(){
-        return voteList.stream().filter(vote -> vote.getLike() ==1).count();
+    public long likeNum() {
+        return voteList.stream().filter(vote -> vote.getLike() == 1).count();
     }
 
-    public String whetherToVote(User user){
+    public String whetherToVote(User user) {
         String result = "none";
-        if (user!=null) {
+        if (user != null) {
             for (Vote vote : voteList) {
                 if (vote.getUser() == user) {
                     if (vote.getLike() == 1) {
@@ -94,8 +92,9 @@ public class Posting {
         }
         return result;
     }
+
     @Builder
-    public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag,Long viewCount,PostingStatus status, PostingType type) {
+    public Posting(User user, Community community, String title, String thumbnail, String contents, String hashtag, Long viewCount, PostingStatus status, PostingType type) {
         this.user = user;
         this.community = community;
         this.title = title;
@@ -107,7 +106,7 @@ public class Posting {
         this.type = type;
     }
 
-    public void deletePosting(){
+    public void deletePosting() {
         this.status = PostingStatus.DELETED;
     }
 }

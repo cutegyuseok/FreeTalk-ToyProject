@@ -1,13 +1,11 @@
 package com.cutegyuseok.freetalk.community.controller;
 
-import com.cutegyuseok.freetalk.auth.dto.UserDTO;
-import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.service.CommunityService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

@@ -3,7 +3,6 @@ package com.cutegyuseok.freetalk.community.dto;
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
-import com.cutegyuseok.freetalk.community.entity.Join;
 import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,6 +34,7 @@ public class CommunityDTO {
         private List<Long> categoryIdList = new ArrayList<>();
 
     }
+
     @Getter
     @NoArgsConstructor
     @ApiModel(value = "커뮤니티 수정", description = "이름,소개,메인 이미지,배경 이미지,카테고리 id 리스트")
@@ -47,8 +47,8 @@ public class CommunityDTO {
         private String communityMainImage;
         @ApiModelProperty(value = "커뮤니티 배경 이미지")
         private String communityBackgroundImage;
-        @ApiModelProperty(value = "해당 커뮤니티 카테고리",required = true)
-        private List<Long> categoryIdList = new ArrayList<>();
+        @ApiModelProperty(value = "해당 커뮤니티 카테고리", required = true)
+        private final List<Long> categoryIdList = new ArrayList<>();
 
     }
 
@@ -76,6 +76,7 @@ public class CommunityDTO {
             this.owner = owner;
         }
     }
+
     @Getter
     @NoArgsConstructor
     @ApiModel(value = "커뮤니티 리스트 조회")
@@ -87,7 +88,7 @@ public class CommunityDTO {
         private int numberOfPostings;
         private List<CategoryDTO.viewCategoryForCommunity> categoryList;
 
-        public ShowCommunityListDTO(Community community){
+        public ShowCommunityListDTO(Community community) {
             this.pk = community.getPk();
             this.name = community.getName();
             this.mainImage = community.getMainImage();
@@ -96,26 +97,28 @@ public class CommunityDTO {
             this.categoryList = community.communityCategoryListDTO();
         }
     }
+
     @Getter
     @ApiModel(value = "커뮤니티 간단 조회")
     public static class ShowCommunitySimpleDTO {
-        private Long pk;
-        private String name;
-        private String mainImage;
+        private final Long pk;
+        private final String name;
+        private final String mainImage;
 
-        public ShowCommunitySimpleDTO(Community community){
+        public ShowCommunitySimpleDTO(Community community) {
             this.pk = community.getPk();
             this.name = community.getName();
             this.mainImage = community.getMainImage();
         }
     }
+
     @Getter
     @ApiModel(value = "커뮤니티 초간단 조회")
     public static class ShowCommunitySuperSimpleDTO {
-        private Long pk;
-        private String name;
+        private final Long pk;
+        private final String name;
 
-        public ShowCommunitySuperSimpleDTO(Community community){
+        public ShowCommunitySuperSimpleDTO(Community community) {
             this.pk = community.getPk();
             this.name = community.getName();
         }

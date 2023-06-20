@@ -61,15 +61,16 @@ public class Comment {
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<Vote> voteList = new ArrayList<>();
 
-    public long likeNum(){
-        for (Vote vote : voteList){
+    public long likeNum() {
+        for (Vote vote : voteList) {
             System.out.println("투표");
         }
-        return voteList.stream().filter(vote -> vote.getLike() ==1).count();
+        return voteList.stream().filter(vote -> vote.getLike() == 1).count();
     }
-    public String whetherToVote(User user){
+
+    public String whetherToVote(User user) {
         String result = "none";
-        for (Vote vote : voteList){
+        for (Vote vote : voteList) {
             if (vote.getUser() == user) {
                 if (vote.getLike() == 1) {
                     result = "liked";
@@ -80,6 +81,7 @@ public class Comment {
         }
         return result;
     }
+
     @Builder
     public Comment(User user, Posting posting, String contents, PostingStatus status, Comment parent) {
         this.user = user;

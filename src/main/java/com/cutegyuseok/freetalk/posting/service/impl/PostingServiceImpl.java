@@ -5,9 +5,6 @@ import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.UserService;
-import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
-import com.cutegyuseok.freetalk.category.entity.Category;
-import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
 import com.cutegyuseok.freetalk.community.repository.CommunityRepository;
 import com.cutegyuseok.freetalk.community.repository.JoinRepository;
@@ -59,7 +56,7 @@ public class PostingServiceImpl implements PostingService {
         try {
             Community community = communityService.getCommunityEntity(communityPK);
             User user = userService.getUser(userAccessDTO);
-            if (!joinRepository.existsByCommunityAndUser(community,user)){
+            if (!joinRepository.existsByCommunityAndUser(community, user)) {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
             Posting posting = Posting.builder()
@@ -75,9 +72,9 @@ public class PostingServiceImpl implements PostingService {
                     .build();
             postingRepository.save(posting);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -88,13 +85,13 @@ public class PostingServiceImpl implements PostingService {
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
             User user = userService.getUser(userAccessDTO);
             Comment targetComment = null;
-            if (commentDTO.getTargetComment()!=null) {
+            if (commentDTO.getTargetComment() != null) {
                 targetComment = commentRepository.findById(commentDTO.getTargetComment()).orElseThrow(NoSuchElementException::new);
                 if (posting != targetComment.getPosting()) {
                     throw new NotAcceptableStatusException("This comment does not belong to this post.");
                 }
             }
-            if (!joinRepository.existsByCommunityAndUser(posting.getCommunity(),user)){
+            if (!joinRepository.existsByCommunityAndUser(posting.getCommunity(), user)) {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
             Comment comment = Comment.builder()
@@ -106,54 +103,54 @@ public class PostingServiceImpl implements PostingService {
                     .build();
             commentRepository.save(comment);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (NoSuchElementException | NotAcceptableStatusException e){
+        } catch (NoSuchElementException | NotAcceptableStatusException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    public ResponseEntity<?> showComments(UserDTO.UserAccessDTO userAccessDTO,Long postPK) {
+    public ResponseEntity<?> showComments(UserDTO.UserAccessDTO userAccessDTO, Long postPK) {
         try {
             User viewer;
-            if (userAccessDTO==null){
+            if (userAccessDTO == null) {
                 viewer = null;
-            }else {
+            } else {
                 viewer = userRepository.findByEmail(userAccessDTO.getEmail()).orElse(null);
             }
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
-            List<PostingDTO.ViewComments> list = commentRepository.findAllByPostingAndParentIsNull(posting).stream().map(e-> PostingDTO.ViewComments.of(e,viewer)).collect(Collectors.toList());
+            List<PostingDTO.ViewComments> list = commentRepository.findAllByPostingAndParentIsNull(posting).stream().map(e -> PostingDTO.ViewComments.of(e, viewer)).collect(Collectors.toList());
             if (list.size() < 1) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(list, HttpStatus.OK);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    public ResponseEntity<?> showPosting(UserDTO.UserAccessDTO userAccessDTO,Long postPK) {
+    public ResponseEntity<?> showPosting(UserDTO.UserAccessDTO userAccessDTO, Long postPK) {
         try {
             User viewer;
-            if (userAccessDTO==null){
+            if (userAccessDTO == null) {
                 viewer = null;
-            }else {
+            } else {
                 viewer = userRepository.findByEmail(userAccessDTO.getEmail()).orElse(null);
             }
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
-            if (!posting.getStatus().equals(PostingStatus.POSTED)){
+            if (!posting.getStatus().equals(PostingStatus.POSTED)) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            PostingDTO.ViewPosting result = new PostingDTO.ViewPosting(posting,posting.whetherToVote(viewer));
-            return new ResponseEntity<>(result,HttpStatus.OK);
-        }catch (NoSuchElementException e){
+            PostingDTO.ViewPosting result = new PostingDTO.ViewPosting(posting, posting.whetherToVote(viewer));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -163,8 +160,8 @@ public class PostingServiceImpl implements PostingService {
     @Transactional
     public ResponseEntity<?> voteRequest(UserDTO.UserAccessDTO userAccessDTO, Long PK, PostingDTO.VoteReqDTO voteReqDTO) {
         try {
-            Posting posting=null;
-            Comment comment=null;
+            Posting posting = null;
+            Comment comment = null;
             if (voteReqDTO.getType().equalsIgnoreCase("POSTING")) {
                 posting = postingRepository.findById(PK).orElseThrow(NoSuchElementException::new);
             } else if (voteReqDTO.getType().equalsIgnoreCase("COMMENT")) {
@@ -174,19 +171,19 @@ public class PostingServiceImpl implements PostingService {
             }
             User user = userService.getUser(userAccessDTO);
             int like;
-            if (voteReqDTO.getLike()){
-                like=1;
-            }else like=0;
+            if (voteReqDTO.getLike()) {
+                like = 1;
+            } else like = 0;
 
-            Vote vote = voteRepository.findByUserAndCommentAndPosting(user,comment,posting).orElse(null);
-            if (vote!=null){
-                if (like==vote.getLike()){
+            Vote vote = voteRepository.findByUserAndCommentAndPosting(user, comment, posting).orElse(null);
+            if (vote != null) {
+                if (like == vote.getLike()) {
                     return new ResponseEntity<>(HttpStatus.CONFLICT);
-                }else {
+                } else {
                     vote.updateVote(like);
                     return new ResponseEntity<>(HttpStatus.OK);
                 }
-            }else {
+            } else {
                 vote = Vote.builder()
                         .user(user)
                         .comment(comment)
@@ -196,9 +193,9 @@ public class PostingServiceImpl implements PostingService {
                 voteRepository.save(vote);
                 return new ResponseEntity<>(HttpStatus.CREATED);
             }
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -209,14 +206,14 @@ public class PostingServiceImpl implements PostingService {
             //date
             LocalDate start;
             LocalDate end;
-            if (startDate!=null) {
+            if (startDate != null) {
                 start = LocalDate.parse(startDate).minusDays(1);
-            }else {
+            } else {
                 start = null;
             }
-            if (endDate!=null){
+            if (endDate != null) {
                 end = LocalDate.parse(endDate).plusDays(1);
-            }else {
+            } else {
                 end = null;
             }
 
@@ -227,27 +224,27 @@ public class PostingServiceImpl implements PostingService {
             PageRequest pageable = PageRequest.of(page - 1, Community_List_Size);
 
             //community
-            Community  community = null;
-            if (communityPK!=null){
+            Community community = null;
+            if (communityPK != null) {
                 community = communityRepository.findById(communityPK).orElse(null);
             }
 
             //user
-            User  user = null;
-            if (userPK!=null){
+            User user = null;
+            if (userPK != null) {
                 user = userRepository.findById(userPK).orElse(null);
             }
-            Page<Posting> postings = postingRepository.search(keyword,keywordType,sort,pageable,community,user,likes,viewCount,start,end,postingType);
+            Page<Posting> postings = postingRepository.search(keyword, keywordType, sort, pageable, community, user, likes, viewCount, start, end, postingType);
             if (postings.getTotalElements() < 1) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             PageResponseDTO pageResponseDTO = new PageResponseDTO(postings);
             pageResponseDTO.setContent(postings.getContent().stream().map(PostingDTO.PostingListDTO::new).collect(Collectors.toList()));
-            return new ResponseEntity<>(pageResponseDTO,HttpStatus.OK);
-        }catch (DateTimeParseException e){
+            return new ResponseEntity<>(pageResponseDTO, HttpStatus.OK);
+        } catch (DateTimeParseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -257,17 +254,17 @@ public class PostingServiceImpl implements PostingService {
         try {
             User user = userService.getUser(userAccessDTO);
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);
-            if (!posting.getUser().equals(user)){
+            if (!posting.getUser().equals(user)) {
                 if (!user.getRole().equals(UserRole.ROLE_SUPER)) {
                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
                 }
             }
             posting.deletePosting();
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

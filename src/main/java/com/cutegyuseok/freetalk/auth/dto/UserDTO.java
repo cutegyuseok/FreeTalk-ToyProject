@@ -129,17 +129,17 @@ public class UserDTO {
     @ApiModel(value = "프로필 조회")
     public static class ProfileCheckReqDTO {
         @ApiModelProperty(value = "pk")
-        private Long pk;
+        private final Long pk;
         @ApiModelProperty(value = "이메일")
-        private String email;
+        private final String email;
         @ApiModelProperty(value = "이름")
-        private String name;
+        private final String name;
         @ApiModelProperty(value = "닉네임")
-        private String nickName;
+        private final String nickName;
         @ApiModelProperty(value = "프로필 사진")
-        private String profileImage;
+        private final String profileImage;
         @ApiModelProperty(value = "자기소개")
-        private String selfIntroduction;
+        private final String selfIntroduction;
 
         public ProfileCheckReqDTO(User user) {
             this.pk = user.getPk();
@@ -152,11 +152,11 @@ public class UserDTO {
     }
 
     @Getter
-    public static class ShowOwnerDTO{
-        private Long userPK;
-        private String nickName;
-        private String profileImage;
-        private String selfIntroduction;
+    public static class ShowOwnerDTO {
+        private final Long userPK;
+        private final String nickName;
+        private final String profileImage;
+        private final String selfIntroduction;
 
         public ShowOwnerDTO(User user) {
             this.userPK = user.getPk();
@@ -165,10 +165,11 @@ public class UserDTO {
             this.selfIntroduction = user.getSelfIntroduction();
         }
     }
+
     @Getter
-    public static class ShowOwnerSimpleDTO{
-        private Long userPK;
-        private String nickName;
+    public static class ShowOwnerSimpleDTO {
+        private final Long userPK;
+        private final String nickName;
 
         public ShowOwnerSimpleDTO(User user) {
             this.userPK = user.getPk();

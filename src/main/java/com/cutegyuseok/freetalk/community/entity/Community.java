@@ -5,7 +5,10 @@ import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.enumType.CommunityStatus;
 import com.cutegyuseok.freetalk.posting.entity.Posting;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -57,19 +60,20 @@ public class Community {
     private LocalDateTime updatedDate;
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommunityCategory> communityCategoryList = new ArrayList<>();
+    private final List<CommunityCategory> communityCategoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
-    private List<Join> joinedUsers = new ArrayList<>();
+    private final List<Join> joinedUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
-    private List<Posting> postingList = new ArrayList<>();
+    private final List<Posting> postingList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user",nullable = false)
+    @JoinColumn(name = "user", nullable = false)
     private User user;
+
     @Builder
-    public Community(String name, String introduce, String mainImage, String backgroundImage,User user,CommunityStatus status) {
+    public Community(String name, String introduce, String mainImage, String backgroundImage, User user, CommunityStatus status) {
         this.name = name;
         this.introduce = introduce;
         this.mainImage = mainImage;
@@ -78,30 +82,30 @@ public class Community {
         this.status = status;
     }
 
-    public List<CategoryDTO.viewCategoryForCommunity> communityCategoryListDTO(){
+    public List<CategoryDTO.viewCategoryForCommunity> communityCategoryListDTO() {
         return communityCategoryList
                 .stream()
                 .map(CategoryDTO.viewCategoryForCommunity::new)
                 .collect(Collectors.toList());
     }
 
-    public void updateCommunity(CommunityDTO.UpdateCommunityDTO dto){
-        if (dto.getCommunityName()!=null) {
+    public void updateCommunity(CommunityDTO.UpdateCommunityDTO dto) {
+        if (dto.getCommunityName() != null) {
             if (!dto.getCommunityName().isBlank()) {
                 this.name = dto.getCommunityName();
             }
         }
-        if (dto.getCommunityIntroduce()!=null) {
+        if (dto.getCommunityIntroduce() != null) {
             if (!dto.getCommunityIntroduce().isBlank()) {
                 this.introduce = dto.getCommunityIntroduce();
             }
         }
-        if (dto.getCommunityMainImage()!=null) {
+        if (dto.getCommunityMainImage() != null) {
             if (!dto.getCommunityMainImage().isBlank()) {
                 this.mainImage = dto.getCommunityMainImage();
             }
         }
-        if (dto.getCommunityBackgroundImage()!=null) {
+        if (dto.getCommunityBackgroundImage() != null) {
             if (!dto.getCommunityBackgroundImage().isBlank()) {
                 this.backgroundImage = dto.getCommunityBackgroundImage();
             }

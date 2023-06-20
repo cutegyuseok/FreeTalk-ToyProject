@@ -2,10 +2,7 @@ package com.cutegyuseok.freetalk.posting.dto;
 
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
-import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
-import com.cutegyuseok.freetalk.category.entity.Category;
 import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
-import com.cutegyuseok.freetalk.community.entity.Community;
 import com.cutegyuseok.freetalk.posting.entity.Comment;
 import com.cutegyuseok.freetalk.posting.entity.Posting;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
@@ -15,12 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +20,7 @@ import java.util.stream.Collectors;
 public class PostingDTO {
     @Getter
     @NoArgsConstructor
-    public static class UploadPosting{
+    public static class UploadPosting {
         @ApiModelProperty(value = "제목 ", required = true)
         private String title;
         @ApiModelProperty(value = "썸네일 ")
@@ -38,9 +30,10 @@ public class PostingDTO {
         @ApiModelProperty(value = "해쉬테그 ", required = true)
         private String hashtag;
     }
+
     @Getter
     @NoArgsConstructor
-    public static class UploadCommentDTO{
+    public static class UploadCommentDTO {
         @ApiModelProperty(value = "내용 ", required = true)
         private String contents;
         @ApiModelProperty(value = "이메일")
@@ -48,23 +41,23 @@ public class PostingDTO {
     }
 
     @Getter
-    public static class ViewPosting{
-        private Long postingPK;
-        private UserDTO.ShowOwnerDTO writer;
-        private CommunityDTO.ShowCommunitySimpleDTO community;
-        private String title;
-        private String thumbnail;
-        private String contents;
-        private String hashtag;
-        private Long viewCount;
-        private String updatedDate;
-        private PostingStatus status;
-        private PostingType type;
-        private Long likes;
-        private Long dislikes;
-        private String whetherToVote;
+    public static class ViewPosting {
+        private final Long postingPK;
+        private final UserDTO.ShowOwnerDTO writer;
+        private final CommunityDTO.ShowCommunitySimpleDTO community;
+        private final String title;
+        private final String thumbnail;
+        private final String contents;
+        private final String hashtag;
+        private final Long viewCount;
+        private final String updatedDate;
+        private final PostingStatus status;
+        private final PostingType type;
+        private final Long likes;
+        private final Long dislikes;
+        private final String whetherToVote;
 
-        public ViewPosting(Posting posting,String whetherToVote){
+        public ViewPosting(Posting posting, String whetherToVote) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
             long likeNum = posting.likeNum();
             this.postingPK = posting.getPk();
@@ -79,7 +72,7 @@ public class PostingDTO {
             this.status = posting.getStatus();
             this.type = posting.getType();
             this.likes = likeNum;
-            this.dislikes = posting.getVoteList().size()-likeNum;
+            this.dislikes = posting.getVoteList().size() - likeNum;
             this.whetherToVote = whetherToVote;
         }
     }
@@ -100,7 +93,7 @@ public class PostingDTO {
         private List<PostingDTO.ViewComments> children;
 
 
-        public static PostingDTO.ViewComments of(Comment comment,User user) {
+        public static PostingDTO.ViewComments of(Comment comment, User user) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
             long likeNum = comment.likeNum();
             return new PostingDTO.ViewComments(
@@ -110,35 +103,36 @@ public class PostingDTO {
                     comment.getUpdatedDate().format(dateTimeFormatter),
                     comment.getStatus(),
                     likeNum,
-                    comment.getVoteList().size()-likeNum,
+                    comment.getVoteList().size() - likeNum,
                     comment.whetherToVote(user),
-                    comment.getChildren().stream().map(e -> PostingDTO.ViewComments.of(e,user)).collect(Collectors.toList())
+                    comment.getChildren().stream().map(e -> PostingDTO.ViewComments.of(e, user)).collect(Collectors.toList())
             );
         }
     }
 
     @Getter
     @NoArgsConstructor
-    public static class VoteReqDTO{
+    public static class VoteReqDTO {
         @ApiModelProperty(value = "타입 (POSTING or COMMENT", required = true)
         private String type;
         @ApiModelProperty(value = "좋아요:true or 싫어요:false", required = true)
         private Boolean like;
     }
-    @Getter
-    public static class PostingListDTO{
-        private Long postingPk;
-        private UserDTO.ShowOwnerSimpleDTO postingWriter;
-        private CommunityDTO.ShowCommunitySuperSimpleDTO postedCommunity;
-        private String title;
-        private String thumbnail;
-        private Long viewCount;
-        private String createdDate;
-        private PostingType postingType;
-        private Long likes;
-        private Long dislikes;
 
-        public PostingListDTO(Posting posting){
+    @Getter
+    public static class PostingListDTO {
+        private final Long postingPk;
+        private final UserDTO.ShowOwnerSimpleDTO postingWriter;
+        private final CommunityDTO.ShowCommunitySuperSimpleDTO postedCommunity;
+        private final String title;
+        private final String thumbnail;
+        private final Long viewCount;
+        private final String createdDate;
+        private final PostingType postingType;
+        private final Long likes;
+        private final Long dislikes;
+
+        public PostingListDTO(Posting posting) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
             long likeNum = posting.likeNum();
             this.postingPk = posting.getPk();
@@ -150,7 +144,7 @@ public class PostingDTO {
             this.createdDate = posting.getCreatedDate().format(dateTimeFormatter);
             this.postingType = posting.getType();
             this.likes = likeNum;
-            this.dislikes = posting.getVoteList().size()-likeNum;
+            this.dislikes = posting.getVoteList().size() - likeNum;
         }
     }
 

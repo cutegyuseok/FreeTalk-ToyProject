@@ -2,8 +2,6 @@ package com.cutegyuseok.freetalk.auth.entity;
 
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
-import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
-import com.cutegyuseok.freetalk.community.entity.Join;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +15,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

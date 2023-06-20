@@ -1,11 +1,8 @@
 package com.cutegyuseok.freetalk.community.service.impl;
 
-import com.amazonaws.services.kms.model.AlreadyExistsException;
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
-import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.UserService;
-import com.cutegyuseok.freetalk.category.dto.CategoryDTO;
 import com.cutegyuseok.freetalk.category.entity.Category;
 import com.cutegyuseok.freetalk.category.repository.CategoryRepository;
 import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
@@ -26,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -46,13 +42,13 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public ResponseEntity<?> createCommunity(CommunityDTO.MakeCommunityDTO dto, UserDTO.UserAccessDTO userAccessDTO) {
-        if (communityRepository.existsByName(dto.getCommunityName())){
+        if (communityRepository.existsByName(dto.getCommunityName())) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         try {
             User user = userService.getUser(userAccessDTO);
             List<Category> categoryList = categoryRepository.findAllByPkIn(dto.getCategoryIdList());
-            if (categoryList.size()!=dto.getCategoryIdList().size()){
+            if (categoryList.size() != dto.getCategoryIdList().size()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             Community community = Community.builder()
@@ -63,7 +59,7 @@ public class CommunityServiceImpl implements CommunityService {
                     .user(user)
                     .status(CommunityStatus.AVAILABLE)
                     .build();
-            for (Category category : categoryList){
+            for (Category category : categoryList) {
                 community.getCommunityCategoryList().add(CommunityCategory.builder()
                         .community(community)
                         .category(category)
@@ -71,9 +67,9 @@ public class CommunityServiceImpl implements CommunityService {
             }
             communityRepository.save(community);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -84,10 +80,10 @@ public class CommunityServiceImpl implements CommunityService {
         try {
             Community community = communityRepository.findById(pk).orElseThrow(NoSuchElementException::new);
             UserDTO.ShowOwnerDTO owner = new UserDTO.ShowOwnerDTO(community.getUser());
-            return new ResponseEntity<>(new CommunityDTO.ShowCommunityDTO(community,owner),HttpStatus.OK);
-        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(new CommunityDTO.ShowCommunityDTO(community, owner), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,7 +93,7 @@ public class CommunityServiceImpl implements CommunityService {
         try {
             Community community = communityRepository.findById(pk).orElseThrow(NoSuchElementException::new);
             User user = userService.getUser(userAccessDTO);
-            if(joinRepository.existsByCommunityAndUser(community,user)){
+            if (joinRepository.existsByCommunityAndUser(community, user)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Join join = Join.builder()
@@ -106,9 +102,9 @@ public class CommunityServiceImpl implements CommunityService {
                     .build();
             joinRepository.save(join);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -119,11 +115,11 @@ public class CommunityServiceImpl implements CommunityService {
         try {
             Community community = communityRepository.findById(pk).orElseThrow(NoSuchElementException::new);
             User user = userService.getUser(userAccessDTO);
-            joinRepository.deleteByCommunityAndUser(community,user);
+            joinRepository.deleteByCommunityAndUser(community, user);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -133,14 +129,14 @@ public class CommunityServiceImpl implements CommunityService {
         try {
             User user = userService.getUser(userAccessDTO);
             List<Join> joinList = joinRepository.findAllByUser(user);
-            if (joinList.isEmpty()){
+            if (joinList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             List<CommunityDTO.ShowCommunityListDTO> result = joinList.stream()
-                    .map(e ->new CommunityDTO.ShowCommunityListDTO(e.getCommunity()))
+                    .map(e -> new CommunityDTO.ShowCommunityListDTO(e.getCommunity()))
                     .collect(Collectors.toList());
-            return new ResponseEntity<>(result,HttpStatus.OK);
-        }catch (Exception e) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -151,26 +147,26 @@ public class CommunityServiceImpl implements CommunityService {
         try {
             User user = userService.getUser(userAccessDTO);
             Community community = communityRepository.findById(communityPk).orElseThrow(NoSuchElementException::new);
-            if (community.getUser()!=user) {
+            if (community.getUser() != user) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             communityCategoryRepository.deleteAllByCommunity(community);
             List<Category> categoryList = categoryRepository.findAllByPkIn(dto.getCategoryIdList());
-            if (categoryList.size()!=dto.getCategoryIdList().size()){
+            if (categoryList.size() != dto.getCategoryIdList().size()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            for (Category category : categoryList){
+            for (Category category : categoryList) {
                 community.getCommunityCategoryList()
                         .add(CommunityCategory.builder()
-                        .community(community)
-                        .category(category)
-                        .build());
+                                .community(community)
+                                .category(category)
+                                .build());
             }
             community.updateCommunity(dto);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -186,7 +182,7 @@ public class CommunityServiceImpl implements CommunityService {
             if (page < 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             PageRequest pageable = PageRequest.of(page - 1, Community_List_Size);
             Category category = null;
-            if (categoryPK!=null){
+            if (categoryPK != null) {
                 category = categoryRepository.findById(categoryPK).orElse(null);
             }
             Page<Community> communityList = communityRepository.search(pageable, keyword, sort, category);
@@ -195,8 +191,8 @@ public class CommunityServiceImpl implements CommunityService {
             }
             PageResponseDTO pageResponseDTO = new PageResponseDTO(communityList);
             pageResponseDTO.setContent(communityList.getContent().stream().map(CommunityDTO.ShowCommunityListDTO::new).collect(Collectors.toList()));
-            return new ResponseEntity<>(pageResponseDTO,HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(pageResponseDTO, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

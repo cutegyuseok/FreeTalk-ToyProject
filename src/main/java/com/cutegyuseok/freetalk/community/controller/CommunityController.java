@@ -21,35 +21,37 @@ public class CommunityController {
 
     @PostMapping("/")
     @ApiOperation(value = "커뮤니티 생성", notes = "code: 201 커뮤니티 생성됨, 406 이미 존재하는 이름,404 카테고리중 존재하지 않는 PK가 입력됨,401사용자 인증 오류 ,500 서버에러")
-    public ResponseEntity<?> makeCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody CommunityDTO.MakeCommunityDTO dto){
-        return communityService.createCommunity(dto,userAccessDTO);
+    public ResponseEntity<?> makeCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @RequestBody CommunityDTO.MakeCommunityDTO dto) {
+        return communityService.createCommunity(dto, userAccessDTO);
     }
+
     @PatchMapping("/{communityPk}")
     @ApiOperation(value = "커뮤니티 수정", notes = "code: 200 커뮤니티 수정됨, 406 이미 존재하는 이름,404 카테고리중 존재하지 않는 PK가 입력됨,401사용자 인증 오류 ,500 서버에러")
-    public ResponseEntity<?> updateCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk, @RequestBody CommunityDTO.UpdateCommunityDTO dto){
-        return communityService.updateCommunity(communityPk,dto,userAccessDTO);
+    public ResponseEntity<?> updateCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @PathVariable Long communityPk, @RequestBody CommunityDTO.UpdateCommunityDTO dto) {
+        return communityService.updateCommunity(communityPk, dto, userAccessDTO);
     }
 
     @GetMapping("/{communityPk}")
     @ApiOperation(value = "커뮤니티 단일 조회", notes = "code: 200 조회 성공,404 존재하지 않는 PK가 입력됨,500 서버에러")
-    public ResponseEntity<?> showCommunity(@PathVariable Long communityPk){
+    public ResponseEntity<?> showCommunity(@PathVariable Long communityPk) {
         return communityService.showCommunity(communityPk);
     }
 
     @PostMapping("/join/{communityPk}")
     @ApiOperation(value = "커뮤니티 참여", notes = "code: 201 참여 성공,400 존재하지 않는 PK가 입력됨,500 서버에러")
-    public ResponseEntity<?> joinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk){
-        return communityService.joinCommunity(userAccessDTO,communityPk);
+    public ResponseEntity<?> joinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @PathVariable Long communityPk) {
+        return communityService.joinCommunity(userAccessDTO, communityPk);
     }
+
     @DeleteMapping("/join/{communityPk}")
     @ApiOperation(value = "커뮤니티 탈퇴", notes = "code: 200 탈퇴 성공,400 존재하지 않는 PK가 입력됨,500 서버에러")
-    public ResponseEntity<?> disJoinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long communityPk){
-        return communityService.disJoinCommunity(userAccessDTO,communityPk);
+    public ResponseEntity<?> disJoinCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @PathVariable Long communityPk) {
+        return communityService.disJoinCommunity(userAccessDTO, communityPk);
     }
 
     @GetMapping("/join")
     @ApiOperation(value = "참여한 커뮤니티 조회", notes = "code: 200 조회 성공,500 서버에러")
-    public ResponseEntity<?> showJoinedCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO){
+    public ResponseEntity<?> showJoinedCommunity(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO) {
         return communityService.showJoinedCommunity(userAccessDTO);
     }
 
@@ -58,8 +60,8 @@ public class CommunityController {
     public ResponseEntity<?> searchCommunity(@RequestParam(required = false) String keyword,
                                              @RequestParam(required = false, defaultValue = "people") String sort,
                                              @RequestParam(required = false, defaultValue = "1") int page,
-                                             @RequestParam(required = false) Long categoryPK){
-        return communityService.searchCommunity(keyword,sort,page,categoryPK);
+                                             @RequestParam(required = false) Long categoryPK) {
+        return communityService.searchCommunity(keyword, sort, page, categoryPK);
     }
 
 }
