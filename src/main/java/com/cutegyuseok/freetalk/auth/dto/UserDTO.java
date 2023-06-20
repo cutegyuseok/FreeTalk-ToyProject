@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.auth.dto;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
+import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -175,5 +176,25 @@ public class UserDTO {
             this.userPK = user.getPk();
             this.nickName = user.getNickName();
         }
+    }
+
+    @Getter
+    public static class ShowUserListByAdmin{
+        private final Long pk;
+        private final String name;
+        private final String nickName;
+        private final String email;
+        private final UserRole role;
+        private final UserStatus status;
+
+        public ShowUserListByAdmin(User user){
+            this.pk = user.getPk();
+            this.name = user.getName();
+            this.nickName = user.getNickName();
+            this.email = user.getEmail();
+            this.role = user.getRole();
+            this.status = user.getStatus();
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.auth.entity;
 
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
+import com.cutegyuseok.freetalk.community.entity.Join;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -68,6 +71,9 @@ public class User {
     @LastModifiedDate
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private final List<Join> joinedCommunity = new ArrayList<>();
 
     @Builder
     public User(Long pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, UserRole role, UserStatus status) {
