@@ -8,10 +8,7 @@ import com.cutegyuseok.freetalk.posting.entity.Posting;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -78,6 +75,7 @@ public class PostingDTO {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
