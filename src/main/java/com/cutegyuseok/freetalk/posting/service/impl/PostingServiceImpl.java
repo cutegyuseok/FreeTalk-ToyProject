@@ -258,6 +258,7 @@ public class PostingServiceImpl implements PostingService {
                 if (!user.getRole().equals(UserRole.ROLE_SUPER)) {
                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
                 }
+                posting.forceDeletePosting();
             }
             posting.deletePosting();
             return new ResponseEntity<>(HttpStatus.OK);

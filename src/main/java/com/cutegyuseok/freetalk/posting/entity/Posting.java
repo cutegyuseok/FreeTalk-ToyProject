@@ -109,4 +109,7 @@ public class Posting {
     public void deletePosting() {
         this.status = PostingStatus.DELETED;
     }
+    public void forceDeletePosting() {
+        this.status = PostingStatus.FORCE_DELETED;
+    }
 }
