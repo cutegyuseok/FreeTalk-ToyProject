@@ -274,5 +274,26 @@ public class PostingServiceImpl implements PostingService {
         }
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<?> deleteComment(UserDTO.UserAccessDTO userAccessDTO, Long commentPK) {
+        try {
+            User user = userService.getUser(userAccessDTO);
+            Comment comment = commentRepository.findById(commentPK).orElseThrow(NoSuchElementException::new);
+            if (!comment.getUser().equals(user)) {
+                if (!user.getRole().equals(UserRole.ROLE_SUPER)) {
+                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                }
+                comment.forceDeletePosting();
+            }
+            comment.deletePosting();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

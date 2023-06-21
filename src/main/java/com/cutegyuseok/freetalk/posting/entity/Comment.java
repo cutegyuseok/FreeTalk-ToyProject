@@ -90,4 +90,11 @@ public class Comment {
         this.status = status;
         this.parent = parent;
     }
+
+    public void deletePosting() {
+        this.status = PostingStatus.DELETED;
+    }
+    public void forceDeletePosting() {
+        this.status = PostingStatus.FORCE_DELETED;
+    }
 }

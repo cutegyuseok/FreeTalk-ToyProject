@@ -19,5 +19,6 @@ public interface PostingService {
     ResponseEntity<?> searchPosting(String keyword, String keywordType, String sort, int page, Long communityPK, Long userPK, Integer likes, Integer viewCount, String startDate, String endDate, String postingType);
 
     ResponseEntity<?> deletePosting(UserDTO.UserAccessDTO userAccessDTO, Long postPK);
+    ResponseEntity<?> deleteComment(UserDTO.UserAccessDTO userAccessDTO, Long commentPK);
 
 }

@@ -88,5 +88,11 @@ public class PostingController {
                                            @PathVariable Long postPK) {
         return postingService.deletePosting(userAccessDTO, postPK);
     }
+    @DeleteMapping("/{commentPK}")
+    @ApiOperation(value = "댓글 삭제", notes = "code: 201 게시글 제거됨, 400 잘못된 요청,401 본인 아님, 500 서버에러")
+    public ResponseEntity<?> deleteComment(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
+                                           @PathVariable Long commentPK) {
+        return postingService.deleteComment(userAccessDTO, commentPK);
+    }
 
 }
