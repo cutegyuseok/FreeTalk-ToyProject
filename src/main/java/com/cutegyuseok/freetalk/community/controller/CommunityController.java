@@ -56,7 +56,8 @@ public class CommunityController {
     }
 
     @GetMapping("/")
-    @ApiOperation(value = "커뮤니티 조회", notes = "code: 200 조회 성공,500 서버에러")
+    @ApiOperation(value = "커뮤니티 조회", notes = "code: 200 조회 성공,500 서버에러\n\n" +
+            "sort :NEWEST, LATEST, PEOPLE(인원수 많은 순), POSTING(게시글 많은 순)")
     public ResponseEntity<?> searchCommunity(@RequestParam(required = false) String keyword,
                                              @RequestParam(required = false, defaultValue = "people") String sort,
                                              @RequestParam(required = false, defaultValue = "1") int page,
