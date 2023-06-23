@@ -94,9 +94,13 @@ public class PostingDTO {
         public static PostingDTO.ViewComments of(Comment comment, User user) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
             long likeNum = comment.likeNum();
+            String tempContents = comment.getContents();
+            if (comment.getStatus()!=PostingStatus.POSTED){
+                tempContents = "삭제되거나 숨겨진 댓글 입니다.";
+            }
             return new PostingDTO.ViewComments(
                     comment.getPk(),
-                    comment.getContents(),
+                    tempContents,
                     new UserDTO.ShowOwnerSimpleDTO(comment.getUser()),
                     comment.getUpdatedDate().format(dateTimeFormatter),
                     comment.getStatus(),

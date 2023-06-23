@@ -47,7 +47,8 @@ public class PostingController {
     }
 
     @PostMapping("/vote/{PK}")
-    @ApiOperation(value = "투표 기능", notes = "type : POSTING || COMMENT \n\n code: 201 요청 성공, 200 수정됨, 409 이미 반영된 의견, 400 옳바르지 않은 TYPE, 404 잘못된 pk 또는 사용자, 500 서버에러")
+    @ApiOperation(value = "투표 기능", notes = "type : POSTING || COMMENT, 이미 있는 투표를 중복으로 보낼경우 의견 취소로 간주." +
+            "\n\n code: 201 요청 성공, 200 수정됨,202 삭제됨, 409 이미 반영된 의견, 400 옳바르지 않은 TYPE, 404 잘못된 pk 또는 사용자, 500 서버에러")
     public ResponseEntity<?> voteRequest(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
                                          @PathVariable Long PK,
                                          @RequestBody PostingDTO.VoteReqDTO voteReqDTO) {

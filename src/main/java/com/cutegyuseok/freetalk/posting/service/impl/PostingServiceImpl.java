@@ -124,11 +124,6 @@ public class PostingServiceImpl implements PostingService {
             if (list.size() < 1) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            for (PostingDTO.ViewComments comments : list){
-                if (comments.getStatus()!=PostingStatus.POSTED){
-                    comments.setContents("삭제되거나 숨겨진 댓글 입니다.");
-                }
-            }
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -183,7 +178,8 @@ public class PostingServiceImpl implements PostingService {
             Vote vote = voteRepository.findByUserAndCommentAndPosting(user, comment, posting).orElse(null);
             if (vote != null) {
                 if (like == vote.getLike()) {
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);
+                    voteRepository.delete(vote);
+                    return new ResponseEntity<>(HttpStatus.ACCEPTED);
                 } else {
                     vote.updateVote(like);
                     return new ResponseEntity<>(HttpStatus.OK);
