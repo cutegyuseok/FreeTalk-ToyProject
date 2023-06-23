@@ -97,8 +97,8 @@
     <summary>회원 서비스</summary>
 </br>
     
-- Spring-Security와 JWT를 활용한 회원 인증 서비스 구현
-- Redis를 활용한 토큰 인증 방식과, 이메일 인증 방식 구현
+- Spring-Security와 JWT의 토큰 인증 방식을 활용한 회원 인증 서비스 구현
+- Redis를 활용한 만료 토큰 관리와, 이메일 인증 방식 구현
 - Security의 Role을 Customzie하여 다양한 권한 구현( ex: 읽기 권한, 쓰기 권한)
 - QueryDsl을 이용한 사용자 검색의 동적 쿼리 지원</br>
     
@@ -106,6 +106,16 @@
 
 </details>
 
+<details>
+    <summary>카테고리 서비스</summary>
+</br>
+    
+- Self join을 활용한 infinite depth의 카테고리 방식
+- 커뮤니티 entity와 M:N 관계의 테이블 구축
+
+[카테고리 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/category)</br>
+
+</details>
 
 ## ERD</br>
 ![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/d4839a72-b232-4460-99c3-49f4084a2eaf)
