@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.posting.entity;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.community.entity.Community;
+import com.cutegyuseok.freetalk.posting.dto.PostingDTO;
 import com.cutegyuseok.freetalk.posting.enumType.PostingStatus;
 import com.cutegyuseok.freetalk.posting.enumType.PostingType;
 import lombok.*;
@@ -111,5 +112,12 @@ public class Posting {
     }
     public void forceDeletePosting() {
         this.status = PostingStatus.FORCE_DELETED;
+    }
+
+    public void updatePosting(PostingDTO.UploadPosting postingDTO){
+        this.title = postingDTO.getTitle();
+        this.thumbnail = postingDTO.getThumbnail();
+        this.contents = postingDTO.getContents();
+        this.hashtag = postingDTO.getHashtag();
     }
 }

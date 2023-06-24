@@ -80,6 +80,24 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
+    @Transactional
+    public ResponseEntity<?> updatePosting(UserDTO.UserAccessDTO userAccessDTO, Long postingPK, PostingDTO.UploadPosting postingDTO) {
+        try {
+            User user= userService.getUser(userAccessDTO);
+            Posting posting = postingRepository.findById(postingPK).orElseThrow(NoSuchElementException::new);
+            if (posting.getUser()!=user){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            posting.updatePosting(postingDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<?> uploadComment(UserDTO.UserAccessDTO userAccessDTO, Long postPK, PostingDTO.UploadCommentDTO commentDTO) {
         try {
             Posting posting = postingRepository.findById(postPK).orElseThrow(NoSuchElementException::new);

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 public interface PostingService {
 
     ResponseEntity<?> uploadPosting(UserDTO.UserAccessDTO userAccessDTO, Long communityPK, PostingDTO.UploadPosting postingDTO);
+    ResponseEntity<?> updatePosting(UserDTO.UserAccessDTO userAccessDTO,Long postingPK, PostingDTO.UploadPosting postingDTO);
 
     ResponseEntity<?> uploadComment(UserDTO.UserAccessDTO userAccessDTO, Long postPK, PostingDTO.UploadCommentDTO commentDTO);
 

@@ -26,6 +26,14 @@ public class PostingController {
         return postingService.uploadPosting(userAccessDTO, communityPK, postingDTO);
     }
 
+    @PatchMapping("/{postingPK}")
+    @ApiOperation(value = "게시글 수정", notes = "code: 201 게시글 생성됨, 400 잘못된 요청,406 커뮤니티 가입 필요, 500 서버에러")
+    public ResponseEntity<?> updatePosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,
+                                           @PathVariable Long postingPK,
+                                           @RequestBody PostingDTO.UploadPosting postingDTO) {
+        return postingService.updatePosting(userAccessDTO, postingPK, postingDTO);
+    }
+
     @GetMapping("/{postPK}")
     @ApiOperation(value = "게시글 단일 조회", notes = "code: 200 조회 성공,204 삭제됨, 404 잘못된 요청, 500 서버에러")
     public ResponseEntity<?> showPosting(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO, @PathVariable Long postPK) {
