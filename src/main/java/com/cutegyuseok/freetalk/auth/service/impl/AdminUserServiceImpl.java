@@ -2,14 +2,11 @@ package com.cutegyuseok.freetalk.auth.service.impl;
 
 import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.entity.User;
-import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
 import com.cutegyuseok.freetalk.auth.repository.UserRepository;
 import com.cutegyuseok.freetalk.auth.service.AdminUserService;
 import com.cutegyuseok.freetalk.community.entity.Community;
-import com.cutegyuseok.freetalk.community.repository.CommunityRepository;
 import com.cutegyuseok.freetalk.community.service.CommunityService;
 import com.cutegyuseok.freetalk.global.response.PageResponseDTO;
-import com.cutegyuseok.freetalk.posting.entity.Posting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,7 +70,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public ResponseEntity<?> getUserInfoByAdmin(Long userPK) {
-        return null;
+        try {
+            User user = userRepository.findById(userPK).orElseThrow(NoSuchElementException::new);
+            return new ResponseEntity<>(new UserDTO.ShowUserByAdmin(user),HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     private String encodingPassword(String password) {

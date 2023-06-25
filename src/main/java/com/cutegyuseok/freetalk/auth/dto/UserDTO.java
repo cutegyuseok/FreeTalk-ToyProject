@@ -3,6 +3,7 @@ package com.cutegyuseok.freetalk.auth.dto;
 import com.cutegyuseok.freetalk.auth.entity.User;
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
+import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,8 +12,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDTO {
 
@@ -216,35 +220,58 @@ public class UserDTO {
         private  String profileImage;
         @ApiModelProperty(value = "자기소개")
         private  String selfIntroduction;
-        @ApiModelProperty(value = "자기소개")
+        @ApiModelProperty(value = "핸드폰 번호")
         private String phone;
-        @ApiModelProperty(value = "자기소개")
+        @ApiModelProperty(value = "권한")
         private UserRole role;
-        @ApiModelProperty(value = "자기소개")
+        @ApiModelProperty(value = "사용자 상태")
         private UserStatus status;
     }
 
-//    @Getter
-//    @NoArgsConstructor
-//    @ApiModel(value = "관리자의 사용자 정보 수정")
-//    public static class UpdateUserByAdmin {
-//        @ApiModelProperty(value = "이메일")
-//        private  String email;
-//        @ApiModelProperty(value = "이름")
-//        private  String name;
-//        @ApiModelProperty(value = "닉네임")
-//        private  String nickName;
-//        @ApiModelProperty(value = "비밀번호")
-//        private String password;
-//        @ApiModelProperty(value = "프로필 사진")
-//        private  String profileImage;
-//        @ApiModelProperty(value = "자기소개")
-//        private  String selfIntroduction;
-//        @ApiModelProperty(value = "자기소개")
-//        private String phone;
-//        @ApiModelProperty(value = "자기소개")
-//        private UserRole role;
-//        @ApiModelProperty(value = "자기소개")
-//        private UserStatus status;
-//    }
+    @Getter
+    @ApiModel(value = "관리자의 사용자 정보 조회")
+    public static class ShowUserByAdmin {
+        private  Long pk;
+        private  String email;
+        private  String name;
+        private  String nickName;
+        private  String profileImage;
+        private  String selfIntroduction;
+        private String phone;
+        private UserRole role;
+        private UserStatus status;
+        private String createdDate;
+        private String updatedDate;
+        private List<CommunityDTO.ShowCommunitySuperSimpleDTO> joinedCommunity;
+
+        public ShowUserByAdmin(User user){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
+            this.pk = user.getPk();
+            this.email = user.getEmail();
+            this.name = user.getName();
+            this.nickName = user.getNickName();
+            this.profileImage = user.getProfileImage();
+            this.selfIntroduction = user.getSelfIntroduction();
+            this.phone = user.getPhone();
+            this.role = user.getRole();
+            this.status = user.getStatus();
+            this.createdDate = user.getCreatedDate().format(dateTimeFormatter);
+            this.updatedDate = user.getUpdatedDate().format(dateTimeFormatter);
+            this.joinedCommunity = user.getJoinedCommunity().stream().map(e -> new CommunityDTO.ShowCommunitySuperSimpleDTO(e.getCommunity())).collect(Collectors.toList());
+        }
+    }
 }
+//    public PostingListDTO(Posting posting) {
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
+//        long likeNum = posting.likeNum();
+//        this.postingPk = posting.getPk();
+//        this.postingWriter = new UserDTO.ShowOwnerSimpleDTO(posting.getUser());
+//        this.postedCommunity = new CommunityDTO.ShowCommunitySuperSimpleDTO(posting.getCommunity());
+//        this.title = posting.getTitle();
+//        this.thumbnail = posting.getThumbnail();
+//        this.viewCount = posting.getViewCount();
+//        this.createdDate = posting.getCreatedDate().format(dateTimeFormatter);
+//        this.postingType = posting.getType();
+//        this.likes = likeNum;
+//        this.dislikes = posting.getVoteList().size() - likeNum;
+//    }

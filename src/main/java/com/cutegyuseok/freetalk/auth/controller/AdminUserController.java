@@ -40,8 +40,7 @@ public class AdminUserController {
         return adminUserService.updateUserByAdmin(userPK,dto);
     }
     @GetMapping("/{userPK}")
-    @PreAuthorize("hasAnyRole('ROLE_WRITE','ROLE_SUPER')")
-    @ApiOperation(value = "관리자의 사용자 정보 수정 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
+    @ApiOperation(value = "관리자의 사용자 정보 조회 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
     public ResponseEntity<?> getUserInfoByAdmin(@PathVariable Long userPK) {
         return adminUserService.getUserInfoByAdmin(userPK);
     }
