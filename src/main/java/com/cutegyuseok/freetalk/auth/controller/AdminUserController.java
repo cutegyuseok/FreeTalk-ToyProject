@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,12 @@ public class AdminUserController {
                                            @RequestParam(required = false) Long communityId,
                                            @RequestParam(required = false, defaultValue = "1") int page) {
         return adminUserService.checkUserList(name,nickName,email,role,status, communityId, page);
+    }
+
+    @PatchMapping("/{userPK}")
+    @PreAuthorize("hasAnyRole('ROLE_SPUER','ROLE_WRITE')")
+    @ApiOperation(value = "관리자의 사용자 정보 수정 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
+    public ResponseEntity<?> updateUserByAdmin(@PathVariable Long userPK,@RequestBody UserDTO.UpdateUserByAdmin dto) {
+        return adminUserService.updateUserByAdmin();
     }
 }

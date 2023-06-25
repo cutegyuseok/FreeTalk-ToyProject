@@ -197,4 +197,30 @@ public class UserDTO {
         }
 
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ApiModel(value = "관리자의 사용자 정보 수정")
+    public static class UpdateUserByAdmin {
+        @ApiModelProperty(value = "이메일")
+        private  String email;
+        @ApiModelProperty(value = "이름")
+        private  String name;
+        @ApiModelProperty(value = "닉네임")
+        private  String nickName;
+        @ApiModelProperty(value = "비밀번호")
+        private String password;
+        @ApiModelProperty(value = "프로필 사진")
+        private  String profileImage;
+        @ApiModelProperty(value = "자기소개")
+        private  String selfIntroduction;
+        @ApiModelProperty(value = "자기소개")
+        private String phone;
+        @ApiModelProperty(value = "자기소개")
+        private UserRole role;
+        @ApiModelProperty(value = "자기소개")
+        private UserStatus status;
+    }
 }
