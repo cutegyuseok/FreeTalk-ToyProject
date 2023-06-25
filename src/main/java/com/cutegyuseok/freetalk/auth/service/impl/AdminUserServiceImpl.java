@@ -15,8 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,7 @@ import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.User_List_Si
 public class AdminUserServiceImpl implements AdminUserService {
     private final UserRepository userRepository;
     private final CommunityService communityService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<?> checkUserList(String userName, String userNickName, String userEmail, String userRole, String userStatus, Long communityId, int page) {
@@ -51,5 +54,29 @@ public class AdminUserServiceImpl implements AdminUserService {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> updateUserByAdmin(Long userPK, UserDTO.UpdateUserByAdmin dto) {
+        try {
+            User user = userRepository.findById(userPK).orElseThrow(NoSuchElementException::new);
+            if (dto.getPassword() != null) {
+                dto.setPassword(encodingPassword(dto.getPassword()));
+            }
+            user.updateUserByAdmin(dto);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getUserInfoByAdmin(Long userPK) {
+        return null;
+    }
+
+    private String encodingPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

@@ -5,6 +5,7 @@ import com.cutegyuseok.freetalk.auth.service.AdminUserService;
 import com.cutegyuseok.freetalk.auth.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,9 +34,15 @@ public class AdminUserController {
     }
 
     @PatchMapping("/{userPK}")
-    @PreAuthorize("hasAnyRole('ROLE_SPUER','ROLE_WRITE')")
-    @ApiOperation(value = "관리자의 사용자 정보 수정 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
+    @PreAuthorize("hasAnyRole('ROLE_WRITE','ROLE_SUPER')")
+    @ApiOperation(value = "관리자의 사용자 정보 수정 ")
     public ResponseEntity<?> updateUserByAdmin(@PathVariable Long userPK,@RequestBody UserDTO.UpdateUserByAdmin dto) {
-        return adminUserService.updateUserByAdmin();
+        return adminUserService.updateUserByAdmin(userPK,dto);
+    }
+    @GetMapping("/{userPK}")
+    @PreAuthorize("hasAnyRole('ROLE_WRITE','ROLE_SUPER')")
+    @ApiOperation(value = "관리자의 사용자 정보 수정 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
+    public ResponseEntity<?> getUserInfoByAdmin(@PathVariable Long userPK) {
+        return adminUserService.getUserInfoByAdmin(userPK);
     }
 }

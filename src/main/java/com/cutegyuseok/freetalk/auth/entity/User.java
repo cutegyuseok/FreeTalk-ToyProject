@@ -1,5 +1,6 @@
 package com.cutegyuseok.freetalk.auth.entity;
 
+import com.cutegyuseok.freetalk.auth.dto.UserDTO;
 import com.cutegyuseok.freetalk.auth.enumType.UserRole;
 import com.cutegyuseok.freetalk.auth.enumType.UserStatus;
 import com.cutegyuseok.freetalk.community.entity.Join;
@@ -108,5 +109,16 @@ public class User {
         if (selfIntroduction != null) {
             this.selfIntroduction = selfIntroduction;
         }
+    }
+    public void updateUserByAdmin(UserDTO.UpdateUserByAdmin dto) {
+        this.email = (dto.getEmail() != null) ? dto.getEmail() : this.email;
+        this.name = (dto.getName() != null) ? dto.getName() : this.name;
+        this.nickName = (dto.getNickName() != null) ? dto.getNickName() : this.nickName;
+        this.password = (dto.getPassword() != null) ? dto.getPassword() : this.password;
+        this.profileImage = (dto.getProfileImage() != null) ? dto.getProfileImage() : this.profileImage;
+        this.selfIntroduction = (dto.getSelfIntroduction() != null) ? dto.getSelfIntroduction() : this.selfIntroduction;
+        this.phone = (dto.getPhone() != null) ? dto.getPhone() : this.phone;
+        this.role = (dto.getRole() != null) ? dto.getRole() : this.role;
+        this.status = (dto.getStatus() != null) ? dto.getStatus() : this.status;
     }
 }
