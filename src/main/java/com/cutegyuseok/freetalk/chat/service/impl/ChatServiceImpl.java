@@ -83,6 +83,14 @@ public class ChatServiceImpl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity<?> leaveRoom(UserDTO.UserAccessDTO userAccessDTO,Long roomPK){
+        ChatRoom chatRoom = getChatRoom(roomPK);
+        User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+        chatUserRepository.deleteByUserAndChatRoom(user,chatRoom);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
     private String makeInvitedMessage(User invitor,List<User> userList){
@@ -95,5 +103,8 @@ public class ChatServiceImpl {
             }
         }sb.append("을 초대하였습니다.");
         return sb.toString();
+    }
+    public ChatRoom getChatRoom(Long roomPK){
+        return chatRoomRepository.findById(roomPK).orElseThrow(NoSuchElementException::new);
     }
 }
