@@ -2,6 +2,7 @@ package com.cutegyuseok.freetalk.chat.entity;
 
 import com.cutegyuseok.freetalk.auth.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -40,4 +41,11 @@ public class ChatMessage {
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Builder
+    public ChatMessage(ChatRoom chatRoom,User user,String message){
+        this.chatRoom = chatRoom;
+        this.user = user;
+        this.message = message;
+    }
 }
