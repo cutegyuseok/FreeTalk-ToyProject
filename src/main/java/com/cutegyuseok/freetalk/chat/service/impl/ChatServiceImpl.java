@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -61,6 +62,28 @@ public class ChatServiceImpl {
         chatRoomRepository.save(chatRoom);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @Transactional
+    public ResponseEntity<?> inviteRoom(UserDTO.UserAccessDTO userAccessDTO, ChatDTO.InviteReqDTO dto,Long roomPK){
+        ChatRoom chatRoom = chatRoomRepository.findById(roomPK).orElseThrow(NoSuchElementException::new);
+        User invitor = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+        List<User> userList = userRepository.findAllByPkIn(dto.getInviteUserList());
+        if (userList == null || userList.size()!= dto.getInviteUserList().size()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        for (User user: userList){
+            chatRoom.getChatUsers().add(new ChatUser(user,chatRoom));
+        }
+        chatRoom.getMessageList()
+                .add(ChatMessage.builder()
+                        .chatRoom(chatRoom)
+                        .message(makeInvitedMessage(invitor,userList))
+                        .build());
+        chatRoomRepository.save(chatRoom);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     private String makeInvitedMessage(User invitor,List<User> userList){
         StringBuilder sb = new StringBuilder();

@@ -51,4 +51,12 @@ public class ChatDTO {
         @ApiModelProperty(value = "초대 사용자 PK LIST")
         private String roomName;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class InviteReqDTO{
+        @ApiModelProperty(value = "초대 사용자 PK LIST" ,required = true)
+        private List<Long> inviteUserList;
+    }
 }
