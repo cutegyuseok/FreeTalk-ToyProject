@@ -59,4 +59,12 @@ public class ChatDTO {
         @ApiModelProperty(value = "초대 사용자 PK LIST" ,required = true)
         private List<Long> inviteUserList;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class SendMessageDTO{
+        @ApiModelProperty(value = "보낼 메세지" ,required = true)
+        private String message;
+    }
 }

@@ -91,6 +91,17 @@ public class ChatServiceImpl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public ResponseEntity<?> sendMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK, ChatDTO.SendMessageDTO dto){
+        ChatRoom chatRoom = getChatRoom(roomPK);
+        User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+        chatRoom.getMessageList().add(ChatMessage.builder()
+                .message(dto.getMessage())
+                .user(user)
+                .build());
+        return null;
+    }
+
+
 
 
     private String makeInvitedMessage(User invitor,List<User> userList){
