@@ -77,6 +77,9 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomPK).orElseThrow(NoSuchElementException::new);
         User invitor = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
         List<User> userList = userRepository.findAllByPkIn(dto.getInviteUserList());
+        if (!chatUserRepository.existsByChatRoomAndUser(chatRoom,invitor)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         if (userList == null || userList.size()!= dto.getInviteUserList().size()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -97,6 +100,11 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = getChatRoom(roomPK);
         User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
         chatUserRepository.deleteByUserAndChatRoom(user,chatRoom);
+        chatRoom.getMessageList()
+                .add(ChatMessage.builder()
+                        .chatRoom(chatRoom)
+                        .message(user.getNickName()+"님이 채팅방을 떠나셨습니다.")
+                        .build());
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Override
@@ -130,7 +138,7 @@ public class ChatServiceImpl implements ChatService {
         if (!chatUserRepository.existsByChatRoomAndUser(chatRoom,user)){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        List<ChatUser> list = chatUserRepository.findAllByChatRoomAndUserNot(user);
+        List<ChatUser> list = chatUserRepository.findAllByChatRoomAndUserNot(chatRoom,user);
         return new ResponseEntity<>(new ChatDTO.RoomInfoDTO(user,list),HttpStatus.OK);
     }
 
