@@ -36,6 +36,7 @@ public class ChatDTO {
 //        private Set<WebSocketSession> sessions = new HashSet<>();
 //    }
 
+    @Getter
     public static class ChatRoomListDTO{
         private Long roomPK;
         private String roomName;
@@ -85,7 +86,9 @@ public class ChatDTO {
         public MessageResDTO(ChatMessage chatMessage){
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
             this.message = chatMessage.getMessage();
-            this.userPK = chatMessage.getUser().getPk();
+            if (chatMessage.getUser()!=null) {
+                this.userPK = chatMessage.getUser().getPk();
+            }
             this.date = chatMessage.getCreatedDate().format(dateTimeFormatter);
         }
     }
