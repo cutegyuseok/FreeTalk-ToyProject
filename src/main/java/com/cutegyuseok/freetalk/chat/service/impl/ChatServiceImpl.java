@@ -11,6 +11,7 @@ import com.cutegyuseok.freetalk.chat.entity.ChatUser;
 import com.cutegyuseok.freetalk.chat.repository.ChatMessageRepository;
 import com.cutegyuseok.freetalk.chat.repository.ChatRoomRepository;
 import com.cutegyuseok.freetalk.chat.repository.ChatUserRepository;
+import com.cutegyuseok.freetalk.chat.service.ChatService;
 import com.cutegyuseok.freetalk.global.response.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,13 +29,14 @@ import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Chat_List_Si
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl {
+public class ChatServiceImpl implements ChatService {
 
     private final ChatUserRepository chatUserRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
+    @Override
     public ResponseEntity<?> findRooms(UserDTO.UserAccessDTO userAccessDTO){
         User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
         List<ChatUser> rooms = chatUserRepository.findAllByUser(user);
@@ -42,7 +44,7 @@ public class ChatServiceImpl {
         List<ChatDTO.ChatRoomListDTO> roomList =  rooms.stream().map(e -> new ChatDTO.ChatRoomListDTO(e.getChatRoom())).collect(Collectors.toList());
         return new ResponseEntity<>(roomList,HttpStatus.OK);
     }
-
+    @Override
     public ResponseEntity<?> createRoom(UserDTO.UserAccessDTO userAccessDTO, ChatDTO.CreateRoomReqDTO dto){
         User creator = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
         List<User> userList = userRepository.findAllByPkIn(dto.getInviteUserList());
@@ -69,7 +71,7 @@ public class ChatServiceImpl {
         chatRoomRepository.save(chatRoom);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @Override
     @Transactional
     public ResponseEntity<?> inviteRoom(UserDTO.UserAccessDTO userAccessDTO, ChatDTO.InviteReqDTO dto,Long roomPK){
         ChatRoom chatRoom = chatRoomRepository.findById(roomPK).orElseThrow(NoSuchElementException::new);
@@ -89,7 +91,7 @@ public class ChatServiceImpl {
         chatRoomRepository.save(chatRoom);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @Override
     @Transactional
     public ResponseEntity<?> leaveRoom(UserDTO.UserAccessDTO userAccessDTO,Long roomPK){
         ChatRoom chatRoom = getChatRoom(roomPK);
@@ -97,16 +99,17 @@ public class ChatServiceImpl {
         chatUserRepository.deleteByUserAndChatRoom(user,chatRoom);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    public ResponseEntity<?> sendMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK, ChatDTO.SendMessageDTO dto){
-        ChatRoom chatRoom = getChatRoom(roomPK);
-        User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+    @Override
+    public ResponseEntity<?> sendMessage(ChatDTO.SendMessageDTO dto){
+        ChatRoom chatRoom = getChatRoom(dto.getRoomPK());
+        User user = userRepository.findById(dto.getWriterPK()).orElseThrow(NoSuchElementException::new);
         chatRoom.getMessageList().add(ChatMessage.builder()
                 .message(dto.getMessage())
                 .user(user)
                 .build());
         return null;
     }
+    @Override
     public ResponseEntity<?> getMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK,int page){
         ChatRoom chatRoom = getChatRoom(roomPK);
         User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
@@ -120,6 +123,7 @@ public class ChatServiceImpl {
         responseDTO.setContent(list);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+    @Override
     public ResponseEntity<?> getRoomInfo(UserDTO.UserAccessDTO userAccessDTO,Long roomPK){
         ChatRoom chatRoom = getChatRoom(roomPK);
         User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
@@ -128,8 +132,6 @@ public class ChatServiceImpl {
         }
         List<ChatUser> list = chatUserRepository.findAllByChatRoomAndUserNot(user);
         return new ResponseEntity<>(new ChatDTO.RoomInfoDTO(user,list),HttpStatus.OK);
-
-
     }
 
 

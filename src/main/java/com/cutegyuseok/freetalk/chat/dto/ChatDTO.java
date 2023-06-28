@@ -72,6 +72,8 @@ public class ChatDTO {
     public static class SendMessageDTO{
         @ApiModelProperty(value = "보낼 메세지" ,required = true)
         private String message;
+        private Long roomPK;
+        private Long writerPK;
     }
 
     @Getter
