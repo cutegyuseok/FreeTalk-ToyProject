@@ -28,10 +28,10 @@ public class ChatRoom {
     @Column(name = "room_name")
     private String roomName;
 
-    @OneToMany(mappedBy = "chat_room",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chatRoom",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<ChatMessage> messageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chat_user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chatRoom",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<ChatUser> chatUsers = new ArrayList<>();
 
     public ChatRoom(String roomName){
