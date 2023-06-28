@@ -4,6 +4,7 @@ public class PageSizeConfig {
 
     public static final int Community_List_Size = 20;
     public static final int User_List_Size = 20;
+    public static final int Chat_List_Size = 40;
 
 
 }

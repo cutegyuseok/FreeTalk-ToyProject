@@ -170,6 +170,18 @@ public class UserDTO {
             this.selfIntroduction = user.getSelfIntroduction();
         }
     }
+    @Getter
+    public static class ShowOwnerWithoutSI {
+        private final Long userPK;
+        private final String nickName;
+        private final String profileImage;
+
+        public ShowOwnerWithoutSI(User user) {
+            this.userPK = user.getPk();
+            this.nickName = user.getNickName();
+            this.profileImage = user.getProfileImage();
+        }
+    }
 
     @Getter
     public static class ShowOwnerSimpleDTO {
@@ -261,17 +273,3 @@ public class UserDTO {
         }
     }
 }
-//    public PostingListDTO(Posting posting) {
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
-//        long likeNum = posting.likeNum();
-//        this.postingPk = posting.getPk();
-//        this.postingWriter = new UserDTO.ShowOwnerSimpleDTO(posting.getUser());
-//        this.postedCommunity = new CommunityDTO.ShowCommunitySuperSimpleDTO(posting.getCommunity());
-//        this.title = posting.getTitle();
-//        this.thumbnail = posting.getThumbnail();
-//        this.viewCount = posting.getViewCount();
-//        this.createdDate = posting.getCreatedDate().format(dateTimeFormatter);
-//        this.postingType = posting.getType();
-//        this.likes = likeNum;
-//        this.dislikes = posting.getVoteList().size() - likeNum;
-//    }

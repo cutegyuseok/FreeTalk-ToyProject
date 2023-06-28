@@ -8,9 +8,13 @@ import com.cutegyuseok.freetalk.chat.dto.ChatDTO;
 import com.cutegyuseok.freetalk.chat.entity.ChatMessage;
 import com.cutegyuseok.freetalk.chat.entity.ChatRoom;
 import com.cutegyuseok.freetalk.chat.entity.ChatUser;
+import com.cutegyuseok.freetalk.chat.repository.ChatMessageRepository;
 import com.cutegyuseok.freetalk.chat.repository.ChatRoomRepository;
 import com.cutegyuseok.freetalk.chat.repository.ChatUserRepository;
+import com.cutegyuseok.freetalk.global.response.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +24,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Chat_List_Size;
+
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl {
 
     private final ChatUserRepository chatUserRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
     public ResponseEntity<?> findRooms(UserDTO.UserAccessDTO userAccessDTO){
@@ -99,6 +106,30 @@ public class ChatServiceImpl {
                 .user(user)
                 .build());
         return null;
+    }
+    public ResponseEntity<?> getMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK,int page){
+        ChatRoom chatRoom = getChatRoom(roomPK);
+        User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+        PageRequest pageable = PageRequest.of(page - 1, Chat_List_Size);
+        if (!chatUserRepository.existsByChatRoomAndUser(chatRoom,user)){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Page<ChatMessage> messages = chatMessageRepository.findAllByChatRoomOrderByPkDesc(chatRoom,pageable);
+        PageResponseDTO responseDTO = new PageResponseDTO(messages);
+        List<ChatDTO.MessageResDTO> list = messages.stream().map(ChatDTO.MessageResDTO::new).collect(Collectors.toList());
+        responseDTO.setContent(list);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+    public ResponseEntity<?> getRoomInfo(UserDTO.UserAccessDTO userAccessDTO,Long roomPK){
+        ChatRoom chatRoom = getChatRoom(roomPK);
+        User user = userRepository.findByEmail(userAccessDTO.getEmail()).orElseThrow(NoSuchElementException::new);
+        if (!chatUserRepository.existsByChatRoomAndUser(chatRoom,user)){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<ChatUser> list = chatUserRepository.findAllByChatRoomAndUserNot(user);
+        return new ResponseEntity<>(new ChatDTO.RoomInfoDTO(user,list),HttpStatus.OK);
+
+
     }
 
 

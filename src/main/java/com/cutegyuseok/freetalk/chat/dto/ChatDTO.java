@@ -1,15 +1,21 @@
 package com.cutegyuseok.freetalk.chat.dto;
 
+import com.cutegyuseok.freetalk.auth.dto.UserDTO;
+import com.cutegyuseok.freetalk.auth.entity.User;
+import com.cutegyuseok.freetalk.chat.entity.ChatMessage;
 import com.cutegyuseok.freetalk.chat.entity.ChatRoom;
+import com.cutegyuseok.freetalk.chat.entity.ChatUser;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -66,5 +72,30 @@ public class ChatDTO {
     public static class SendMessageDTO{
         @ApiModelProperty(value = "보낼 메세지" ,required = true)
         private String message;
+    }
+
+    @Getter
+    public static class MessageResDTO{
+        private String message;
+        private Long userPK;
+        private String date;
+
+        public MessageResDTO(ChatMessage chatMessage){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm");
+            this.message = chatMessage.getMessage();
+            this.userPK = chatMessage.getUser().getPk();
+            this.date = chatMessage.getCreatedDate().format(dateTimeFormatter);
+        }
+    }
+
+    @Getter
+    public static class RoomInfoDTO{
+        private UserDTO.ShowOwnerWithoutSI viewer;
+        private List<UserDTO.ShowOwnerWithoutSI> users;
+
+        public RoomInfoDTO(User user,List<ChatUser> userList){
+            this.viewer = new UserDTO.ShowOwnerWithoutSI(user);
+            this.users = userList.stream().map(e -> new UserDTO.ShowOwnerWithoutSI(e.getUser())).collect(Collectors.toList());
+        }
     }
 }
