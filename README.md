@@ -118,4 +118,5 @@
 </details>
 
 ## ERD</br>
-![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/d4839a72-b232-4460-99c3-49f4084a2eaf)
+![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/18f2b96e-a06f-4ca9-9f0b-6a44ba146b29)
+
