@@ -28,10 +28,9 @@ public interface ChatService {
 
     public ResponseEntity<?> inviteRoom(UserDTO.UserAccessDTO userAccessDTO, ChatDTO.InviteReqDTO dto,Long roomPK);
 
-    @Transactional
     public ResponseEntity<?> leaveRoom(UserDTO.UserAccessDTO userAccessDTO,Long roomPK);
 
-    public ResponseEntity<?> sendMessage(ChatDTO.SendMessageDTO dto);
+    public ChatDTO.MessageResDTO sendMessage(ChatDTO.SendMessageDTO dto);
     public ResponseEntity<?> getMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK,int page);
     public ResponseEntity<?> getRoomInfo(UserDTO.UserAccessDTO userAccessDTO,Long roomPK);
 }

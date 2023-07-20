@@ -41,7 +41,7 @@ public class ChatController {
         return chatService.getMessage(userAccessDTO,roomPK,page);
     }
     @GetMapping("/rooms/{roomPK}")
-    @ApiOperation(value = "채팅 가져오기")
+    @ApiOperation(value = "채팅방 정보 가져오기")
     public ResponseEntity<?> getRoomInfo(@AuthenticationPrincipal UserDTO.UserAccessDTO userAccessDTO,@PathVariable Long roomPK){
         return chatService.getRoomInfo(userAccessDTO,roomPK);
     }

@@ -108,14 +108,16 @@ public class ChatServiceImpl implements ChatService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Override
-    public ResponseEntity<?> sendMessage(ChatDTO.SendMessageDTO dto){
+    public ChatDTO.MessageResDTO sendMessage(ChatDTO.SendMessageDTO dto){
         ChatRoom chatRoom = getChatRoom(dto.getRoomPK());
         User user = userRepository.findById(dto.getWriterPK()).orElseThrow(NoSuchElementException::new);
-        chatRoom.getMessageList().add(ChatMessage.builder()
+        ChatMessage chatMessage = ChatMessage.builder()
                 .message(dto.getMessage())
                 .user(user)
-                .build());
-        return null;
+                .chatRoom(chatRoom)
+                .build();
+        ChatMessage chatMessageRes = chatMessageRepository.save(chatMessage);
+        return new ChatDTO.MessageResDTO(chatMessageRes);
     }
     @Override
     public ResponseEntity<?> getMessage(UserDTO.UserAccessDTO userAccessDTO,Long roomPK,int page){
