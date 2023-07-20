@@ -91,6 +91,19 @@
 
 </details>
 
+<details>
+    <summary><span>★</span>라이브 채팅 서비스</summary>
+</br>
+    
+- 채팅방 개설(N명의 회원 채팅방)
+- 본인이 참여되어있는 채팅방 조회
+- 채팅방 초대
+- 채팅방 떠나기
+- 채팅방 불러오기
+- WevSocket - STOMP 를 이용한 채팅 발신 수신
+
+</details>
+
 ### 기술 명세
 
 <details>
@@ -118,4 +131,5 @@
 </details>
 
 ## ERD</br>
-![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/d4839a72-b232-4460-99c3-49f4084a2eaf)
+![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/18f2b96e-a06f-4ca9-9f0b-6a44ba146b29)
+
