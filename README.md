@@ -49,7 +49,8 @@
     - 키워드 검색 기능 
 #### 사용된 기술
 - 게시글, 멤버, 카테고리 와의 연관 관계 테이블
-- 
+
+[커뮤니티 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/community)</br>
 </details>
 
 <details>
@@ -64,19 +65,11 @@
       - 최신순, 오래된 순, 조회수 순, 좋아요 순
   - 다양한 조건
       - 커뮤니티 조건, 작성자 조건, 최소 좋아요 조건, 최소 조회수 조건, 게시 날짜 조건, 게시글 종류 조건
-  
-</br>
 
-
-
-  
+#### 사용된 기술
 - Self join을 활용한 무한 대댓글 기능과 CRUD</br>
-</br>
 
-- 예시 이미지- 게시글의 댓글 조회 일부분</br>
-  
-![image](https://github.com/cutegyuseok/FreeTalk-ToyProject/assets/103543611/065539de-2b33-4159-8bf5-450d05997cec)
-
+[게시글 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/posting)</br>
 </br>
 
 </details>
@@ -92,6 +85,8 @@
 - 채팅방 불러오기
 - WevSocket - STOMP 를 이용한 채팅 발신 수신
 
+[채팅 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/chat)</br>
+[WebSocket 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/global/config/webSocket)</br>
 </details>
 
 ## ERD</br>
