@@ -67,7 +67,10 @@
       - 커뮤니티 조건, 작성자 조건, 최소 좋아요 조건, 최소 조회수 조건, 게시 날짜 조건, 게시글 종류 조건
 
 #### 사용된 기술
-- Self join을 활용한 무한 대댓글 기능과 CRUD</br>
+- Self join을 활용한 무한 대댓글 기능의 CRUD
+- 게시글 투표 기능.( 사용자 구분을 통한 중복 투표 제한)
+- 다양한 조건의 게시글 검색
+- 댓글수 좋아요수 등 다양한 방식의 정렬
 
 [게시글 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/posting)</br>
 </br>
