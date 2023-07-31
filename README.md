@@ -91,9 +91,6 @@
 #### 사용된 기술
 - WebSocket/STOMPT 를 이용한 실시간 채팅 발신 수신.
 
-
-#### 사용된 기술
-
 [채팅 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/chat)</br>
 [WebSocket 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/global/config/webSocket)</br>
 </details>
