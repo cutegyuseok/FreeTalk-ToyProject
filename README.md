@@ -89,7 +89,8 @@
 - 라이브 채팅 발신 수신
 
 #### 사용된 기술
-- WebSocket/STOMPT 를 이용한 실시간 채팅 발신 수신.
+- WebSocket/STOMP 를 이용한 실시간 채팅 발신 수신.
+- 채팅방 입장 시, 기존 채팅을 불러온 후, WebSocket을 채팅방 PK의 주소로 subscribe 한 후  메세지 발송시 같은 주소로 publish하여 발신/수신 하는 방식.
 
 [채팅 서비스 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/chat)</br>
 [WebSocket 부분](https://github.com/cutegyuseok/FreeTalk-ToyProject/tree/master/src/main/java/com/cutegyuseok/freetalk/global/config/webSocket)</br>
