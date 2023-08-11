@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -74,13 +75,13 @@ public class ChatDTO {
         @ApiModelProperty(value = "보낼 메세지" ,required = true)
         private String message;
         private Long roomPK;
-        private Long writerPK;
+        private UUID writerPK;
     }
 
     @Getter
     public static class MessageResDTO{
         private String message;
-        private Long userPK;
+        private UUID userPK;
         private String date;
 
         public MessageResDTO(ChatMessage chatMessage){

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = {"게시글 서비스"}, description = "게시글 관련 서비스")
@@ -82,7 +84,7 @@ public class PostingController {
                                            @RequestParam(required = false) String sort,
                                            @RequestParam(required = false, defaultValue = "1") int page,
                                            @RequestParam(required = false) Long communityPK,
-                                           @RequestParam(required = false) Long userPK,
+                                           @RequestParam(required = false) UUID userPK,
                                            @RequestParam(required = false) Integer likes,
                                            @RequestParam(required = false) Integer viewCount,
                                            @RequestParam(required = false) String startDate,

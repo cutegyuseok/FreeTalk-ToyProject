@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Community_List_Size;
@@ -220,7 +221,7 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public ResponseEntity<?> searchPosting(String keyword, String keywordType, String sort, int page, Long communityPK, Long userPK, Integer likes, Integer viewCount, String startDate, String endDate, String postingType) {
+    public ResponseEntity<?> searchPosting(String keyword, String keywordType, String sort, int page, Long communityPK, UUID userPK, Integer likes, Integer viewCount, String startDate, String endDate, String postingType) {
         try {
             //date
             LocalDate start;

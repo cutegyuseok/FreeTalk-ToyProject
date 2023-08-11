@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class UserDTO {
@@ -134,7 +135,7 @@ public class UserDTO {
     @ApiModel(value = "프로필 조회")
     public static class ProfileCheckReqDTO {
         @ApiModelProperty(value = "pk")
-        private final Long pk;
+        private final UUID pk;
         @ApiModelProperty(value = "이메일")
         private final String email;
         @ApiModelProperty(value = "이름")
@@ -158,7 +159,7 @@ public class UserDTO {
 
     @Getter
     public static class ShowOwnerDTO {
-        private final Long userPK;
+        private final UUID userPK;
         private final String nickName;
         private final String profileImage;
         private final String selfIntroduction;
@@ -172,7 +173,7 @@ public class UserDTO {
     }
     @Getter
     public static class ShowOwnerWithoutSI {
-        private final Long userPK;
+        private final UUID userPK;
         private final String nickName;
         private final String profileImage;
 
@@ -185,7 +186,7 @@ public class UserDTO {
 
     @Getter
     public static class ShowOwnerSimpleDTO {
-        private final Long userPK;
+        private final UUID userPK;
         private final String nickName;
 
         public ShowOwnerSimpleDTO(User user) {
@@ -196,7 +197,7 @@ public class UserDTO {
 
     @Getter
     public static class ShowUserListByAdmin{
-        private final Long pk;
+        private final UUID pk;
         private final String name;
         private final String nickName;
         private final String email;
@@ -243,7 +244,7 @@ public class UserDTO {
     @Getter
     @ApiModel(value = "관리자의 사용자 정보 조회")
     public static class ShowUserByAdmin {
-        private  Long pk;
+        private  UUID pk;
         private  String email;
         private  String name;
         private  String nickName;

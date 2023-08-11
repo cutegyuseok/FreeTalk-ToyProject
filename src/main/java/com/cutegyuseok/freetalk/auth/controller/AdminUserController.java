@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Api(tags = {"관리자의 사용자 관리 서비스"}, description = "")
 @RestController
 @RequiredArgsConstructor
@@ -36,12 +38,12 @@ public class AdminUserController {
     @PatchMapping("/{userPK}")
     @PreAuthorize("hasAnyRole('ROLE_WRITE','ROLE_SUPER')")
     @ApiOperation(value = "관리자의 사용자 정보 수정 ")
-    public ResponseEntity<?> updateUserByAdmin(@PathVariable Long userPK,@RequestBody UserDTO.UpdateUserByAdmin dto) {
+    public ResponseEntity<?> updateUserByAdmin(@PathVariable UUID userPK, @RequestBody UserDTO.UpdateUserByAdmin dto) {
         return adminUserService.updateUserByAdmin(userPK,dto);
     }
     @GetMapping("/{userPK}")
     @ApiOperation(value = "관리자의 사용자 정보 조회 ", notes = "code: 200 OK, 404 없는 사용자, 500 서버에러")
-    public ResponseEntity<?> getUserInfoByAdmin(@PathVariable Long userPK) {
+    public ResponseEntity<?> getUserInfoByAdmin(@PathVariable UUID userPK) {
         return adminUserService.getUserInfoByAdmin(userPK);
     }
 }

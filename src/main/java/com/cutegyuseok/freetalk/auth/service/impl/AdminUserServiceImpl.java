@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.User_List_Size;
@@ -55,7 +56,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> updateUserByAdmin(Long userPK, UserDTO.UpdateUserByAdmin dto) {
+    public ResponseEntity<?> updateUserByAdmin(UUID userPK, UserDTO.UpdateUserByAdmin dto) {
         try {
             User user = userRepository.findById(userPK).orElseThrow(NoSuchElementException::new);
             if (dto.getPassword() != null) {
@@ -69,7 +70,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public ResponseEntity<?> getUserInfoByAdmin(Long userPK) {
+    public ResponseEntity<?> getUserInfoByAdmin(UUID userPK) {
         try {
             User user = userRepository.findById(userPK).orElseThrow(NoSuchElementException::new);
             return new ResponseEntity<>(new UserDTO.ShowUserByAdmin(user),HttpStatus.OK);

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -30,9 +32,10 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(name = "pk")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pk;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "pk",columnDefinition = "BINARY(16)")
+    private UUID pk;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -77,7 +80,7 @@ public class User {
     private final List<Join> joinedCommunity = new ArrayList<>();
 
     @Builder
-    public User(Long pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, UserRole role, UserStatus status) {
+    public User(UUID pk, String email, String name, String nickName, String password, String profileImage, String selfIntroduction, String phone, LocalDate birthday, UserRole role, UserStatus status) {
         this.pk = pk;
         this.email = email;
         this.name = name;
