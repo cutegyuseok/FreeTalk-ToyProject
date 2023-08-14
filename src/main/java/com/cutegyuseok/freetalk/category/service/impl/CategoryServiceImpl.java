@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> updateCategory(Long categoryId, CategoryDTO.UpdateCategory dto) {
+    public ResponseEntity<?> updateCategory(UUID categoryId, CategoryDTO.UpdateCategory dto) {
         try {
             if (categoryRepository.existsByName(dto.getCategoryName())) {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -74,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> deleteCategory(Long categoryId) {
+    public ResponseEntity<?> deleteCategory(UUID categoryId) {
         try {
             Category category = categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
             if (category.getChildren().size() > 0) {
@@ -93,7 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<?> viewCategoryDetail(Long categoryId) {
+    public ResponseEntity<?> viewCategoryDetail(UUID categoryId) {
         try {
             Category category = categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
             return new ResponseEntity<>(CategoryDTO.ViewCategory.of(category), HttpStatus.OK);

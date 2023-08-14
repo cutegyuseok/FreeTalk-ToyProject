@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.cutegyuseok.freetalk.global.config.PageSizeConfig.Community_List_Size;
@@ -177,7 +178,7 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public ResponseEntity<?> searchCommunity(String keyword, String sort, int page, Long categoryPK) {
+    public ResponseEntity<?> searchCommunity(String keyword, String sort, int page, UUID categoryPK) {
         try {
             if (page < 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             PageRequest pageable = PageRequest.of(page - 1, Community_List_Size);

@@ -2,10 +2,12 @@ package com.cutegyuseok.freetalk.category.entity;
 
 import com.cutegyuseok.freetalk.community.entity.CommunityCategory;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,9 +17,10 @@ import java.util.List;
 public class Category {
 
     @Id
-    @Column(name = "pk")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pk;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "pk",columnDefinition = "BINARY(16)")
+    private UUID pk;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<CommunityCategory> communityCategory = new ArrayList<>();

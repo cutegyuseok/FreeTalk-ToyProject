@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = {"커뮤니티 서비스"}, description = "커뮤니티 관련 서비스")
@@ -61,7 +63,7 @@ public class CommunityController {
     public ResponseEntity<?> searchCommunity(@RequestParam(required = false) String keyword,
                                              @RequestParam(required = false, defaultValue = "people") String sort,
                                              @RequestParam(required = false, defaultValue = "1") int page,
-                                             @RequestParam(required = false) Long categoryPK) {
+                                             @RequestParam(required = false) UUID categoryPK) {
         return communityService.searchCommunity(keyword, sort, page, categoryPK);
     }
 

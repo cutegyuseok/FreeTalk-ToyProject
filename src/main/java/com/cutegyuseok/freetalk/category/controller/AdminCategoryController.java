@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Api(tags = {"관리자 카테고리 서비스"}, description = "카테고리 생성, 수정, 삭제")
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class AdminCategoryController {
     @PatchMapping("/{categoryId}")
     @ApiOperation(value = "카테고리 이름 수정", notes = "카테고리 아이디와 카테고리 새로운 이름 입력.\n\n" +
             "code: 200 수정됨, 406 이미 존재하는 이름, 404 해당 카테고리 ID 가 없음")
-    public ResponseEntity<?> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO.UpdateCategory dto) {
+    public ResponseEntity<?> updateCategory(@PathVariable UUID categoryId, @RequestBody CategoryDTO.UpdateCategory dto) {
         return categoryService.updateCategory(categoryId, dto);
     }
 
@@ -38,7 +40,7 @@ public class AdminCategoryController {
     @DeleteMapping("/{categoryId}")
     @ApiOperation(value = "카테고리 삭제", notes = "카테고리 아이디를 입력하면 삭제.\n\n" +
             "code: 200 삭제됨, 404 해당 카테고리 ID 가 없음, 406 자녀 카테고리 먼저 삭제 필요.")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable UUID categoryId) {
         return categoryService.deleteCategory(categoryId);
     }
 

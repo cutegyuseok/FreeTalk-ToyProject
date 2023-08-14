@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CategoryDTO {
@@ -24,7 +25,7 @@ public class CategoryDTO {
         @ApiModelProperty(value = "생성할 카테고리 단계 ( 1: 대분류, 2: 중분류, 3: 소분류 )", required = true)
         private int categoryLevel;
         @ApiModelProperty(value = "생성할 카테고리 부모 ID( 생성할 카테고리가 중분류, 소분류인 경우 필요, 대분류의 경우 아무값 넣어도 상관 없음.)", required = true)
-        private Long categoryParent;
+        private UUID categoryParent;
 
 
         public Category toChild(Category categoryParent) {
@@ -43,7 +44,7 @@ public class CategoryDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ViewCategory {
-        private Long categoryPk;
+        private UUID categoryPk;
         private String categoryName;
         private int categoryLevel;
         private List<ViewCategory> children;
@@ -71,7 +72,7 @@ public class CategoryDTO {
     @ApiModel(value = "카테고리 리스트 출력 DTO")
     public static class viewCategoryForCommunity {
         private final String categoryName;
-        private final Long categoryPk;
+        private final UUID categoryPk;
 
         public viewCategoryForCommunity(CommunityCategory communityCategory) {
             this.categoryName = communityCategory.getCategory().getName();

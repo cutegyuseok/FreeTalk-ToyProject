@@ -5,6 +5,8 @@ import com.cutegyuseok.freetalk.community.dto.CommunityDTO;
 import com.cutegyuseok.freetalk.community.entity.Community;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 public interface CommunityService {
 
     ResponseEntity<?> createCommunity(CommunityDTO.MakeCommunityDTO dto, UserDTO.UserAccessDTO userAccessDTO);
@@ -21,5 +23,5 @@ public interface CommunityService {
 
     Community getCommunityEntity(Long id);
 
-    ResponseEntity<?> searchCommunity(String keyword, String sort, int page, Long categoryPK);
+    ResponseEntity<?> searchCommunity(String keyword, String sort, int page, UUID categoryPK);
 }
